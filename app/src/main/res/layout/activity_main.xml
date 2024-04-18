@@ -6,35 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/gametitle"
-        style="@style/Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/game_title"
-        app:layout_constraintEnd_toEndOf="@+id/backgroundImage"
-        app:layout_constraintStart_toStartOf="@+id/backgroundImage"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/backgroundImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/descr_back"
         android:scaleType="centerCrop"
-        android:src="@drawable/backgroundwar"
-        tools:layout_editor_absoluteX="-30dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:src="@drawable/backgroundwar" />
 
     <TextView
+        android:id="@+id/gametitle"
+        style="@style/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/game_title"
+        app:layout_constraintBottom_toTopOf="@+id/polytech2024"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/polytech2024"
         style="@style/Polytech"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/poly"
-        app:layout_constraintEnd_toEndOf="@+id/backgroundImage"
-        app:layout_constraintStart_toStartOf="@+id/backgroundImage"
-        app:layout_constraintTop_toBottomOf="@+id/gametitle"
-        android:id="@+id/polytech2024"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gametitle" />
 
     <TextView
         android:id="@+id/recordTxt"
@@ -42,12 +41,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
+        android:layout_marginStart="5dp"
         android:text="@string/highscore"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.016"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.017" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
