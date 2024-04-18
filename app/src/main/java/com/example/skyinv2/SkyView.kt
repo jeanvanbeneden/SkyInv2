@@ -3,6 +3,7 @@ package com.example.skyinv2
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Paint
+import android.view.MotionEvent
 import android.view.SurfaceView
 
 
@@ -14,6 +15,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private var background2: Background
     private val screenX: Int
     private val screenY: Int
+    private val player: Player
 
 
     //On crée un objet Paint pour dessiner les images de fond.
@@ -28,6 +30,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         paint = Paint()
         screenX = screenXParam
         screenY = screenYParam
+        player = Player(screenYParam, screenXParam, resources)
+
     }
 
     override fun run() {
@@ -55,7 +59,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     }
 
 
-
     //La méthode draw dessine les deux images de fond sur le canvas.
     //Le canvas est un objet qui représente la surface de dessin de la vue.
     private fun draw() {
@@ -64,13 +67,29 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             val canvas = holder.lockCanvas()
 
             //On dessine les deux images de fond sur le canvas.
-            canvas.drawBitmap(background1.background, background1.x.toFloat(), background1.y.toFloat(), paint)
-            canvas.drawBitmap(background2.background, background2.x.toFloat(), background2.y.toFloat(), paint)
+            canvas.drawBitmap(
+                background1.background,
+                background1.x.toFloat(),
+                background1.y.toFloat(),
+                paint
+            )
+            canvas.drawBitmap(
+                background2.background,
+                background2.x.toFloat(),
+                background2.y.toFloat(),
+                paint
+            )
+
+
+            //Le player.x et player.y sont les coordonnées du coin supérieur gauche de l'image du joueur.
+            canvas.drawBitmap(player.player, player.x.toFloat(), player.y.toFloat(), paint)
 
 
             //On dessine le canvas sur la vue.
             //holder est un objet de type SurfaceHolder qui représente la surface de dessin de la vue.
             holder.unlockCanvasAndPost(canvas)
+
+
         }
     }
 
@@ -83,7 +102,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             e.printStackTrace()
         }
     }
-
 
 
     //Chaque fois que la méthode update est appelée, on déplace les deux images de fond vers la gauche de 10 pixels.
@@ -102,9 +120,36 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             background2.x = screenX
         }
 
+        if (player.up) {
+            player.moveUp()
+        }
+
+        if (player.down) {
+            player.moveDown()
+        }
+
     }
 
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                player.up = true
+                player.down = false
+            }
+
+            MotionEvent.ACTION_UP -> {
+                player.down = true
+                player.up = false
+            }
+        }
+        return true
+    }
 }
+
+
+
+
 
 
 

@@ -14,6 +14,11 @@ import android.view.WindowManager
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
 
+
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+
             val screenHeight = resources.displayMetrics.heightPixels
             val screenWidth = resources.displayMetrics.widthPixels
             skyView = SkyView(this, screenWidth, screenHeight)
