@@ -9,7 +9,7 @@ class Player (screenY : Int, screenX: Int, res : Resources){
     var y : Int
     var player : Bitmap
     private var width : Int
-    private var height : Int
+    var height : Int
     var up : Boolean
     var down : Boolean
 

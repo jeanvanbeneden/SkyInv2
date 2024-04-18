@@ -127,6 +127,12 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         if (player.down) {
             player.moveDown()
         }
+        if (player.y <-150){
+            player.y = -150
+        }
+        if (player.y > 750){
+            player.y = 750
+        }
 
     }
 
