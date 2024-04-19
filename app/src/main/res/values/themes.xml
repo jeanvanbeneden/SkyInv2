@@ -24,7 +24,7 @@
 
     <style name="play">
         <item name="android:textSize">80sp</item>
-        <item name="android:textColor">@color/darkk_grey</item>
+        <item name="android:textColor">@color/dark_grey</item>
         <item name="android:fontFamily">@font/blood_patter</item>
     </style>
 </resources>

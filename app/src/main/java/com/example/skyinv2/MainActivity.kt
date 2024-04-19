@@ -7,7 +7,7 @@ import android.view.WindowManager
 import android.widget.Button
 
 
-class MainActivity : AppCompatActivity() {
+class  MainActivity : AppCompatActivity() {
 
     private lateinit var play : Button
 

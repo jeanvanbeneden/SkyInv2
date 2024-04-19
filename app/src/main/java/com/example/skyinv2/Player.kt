@@ -20,7 +20,7 @@ class Player (screenY : Int, screenX: Int, res : Resources){
         width /=3
         height /=3
         y = screenY / 2 -height/2
-        x = screenX / 2 -width
+        x = screenX / 2 - 1000
         player = Bitmap.createScaledBitmap(player, width, height, false)
         up = false
         down = true
@@ -28,11 +28,11 @@ class Player (screenY : Int, screenX: Int, res : Resources){
 
 
     fun moveUp(){
-        y -= 5
+        y -= 7
     }
 
     fun moveDown(){
-        y += 5
+        y += 7
     }
 
 

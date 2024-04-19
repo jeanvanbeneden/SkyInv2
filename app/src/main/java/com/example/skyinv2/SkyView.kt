@@ -2,10 +2,12 @@ package com.example.skyinv2
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Paint
 import android.view.MotionEvent
 import android.view.SurfaceView
-
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 
 @SuppressLint("ViewConstructor")
 class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : SurfaceView(context), Runnable {
@@ -16,12 +18,13 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private val screenX: Int
     private val screenY: Int
     private val player: Player
-
-
+    private var score : Int
+    private var etat : String
     //On crée un objet Paint pour dessiner les images de fond.
     private val paint: Paint
-
-
+    private var pausebutton : Bitmap
+    private val buttonX : Int
+    private val buttonY : Int
     init {
         isPlaying = false
         background1 = Background(screenXParam, screenYParam, resources)
@@ -31,7 +34,16 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         screenX = screenXParam
         screenY = screenYParam
         player = Player(screenYParam, screenXParam, resources)
-
+        paint.textSize = 80f
+        pausebutton = BitmapFactory.decodeResource(resources, R.drawable.pausebutton)
+        val width = pausebutton.width / 10  // Nouvelle largeur (par exemple, la moitié de la largeur d'origine)
+        val height = pausebutton.height / 10  // Nouvelle hauteur (par exemple, la moitié de la hauteur d'origine)
+        pausebutton = Bitmap.createScaledBitmap(pausebutton, width, height, true)
+        paint.color = Color.rgb(0, 0, 0 )
+        etat = "Pause"
+        score = 0
+        buttonX = 100
+        buttonY = 50
     }
 
     override fun run() {
@@ -53,6 +65,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         try {
             isPlaying = false
             thread?.join()
+
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -80,9 +93,23 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 paint
             )
 
+            canvas.drawText(
+                "Score: $score ",
+                1700f ,
+                150f,
+                paint
+            )
+
+            canvas.drawBitmap(pausebutton, buttonX.toFloat(), buttonY.toFloat(), paint)   //affiche le logo play/pause cliquable
+
 
             //Le player.x et player.y sont les coordonnées du coin supérieur gauche de l'image du joueur.
-            canvas.drawBitmap(player.player, player.x.toFloat(), player.y.toFloat(), paint)
+            canvas.drawBitmap(
+                player.player,
+                player.x.toFloat(),
+                player.y.toFloat(),
+                paint
+            )
 
 
             //On dessine le canvas sur la vue.
@@ -109,6 +136,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
 
         background1.x -= 10
         background2.x -= 10
+
+        score++ //je dois encore créer un nouveau thread qui execute un timer avant d'incrementer de 1 le score (1 points = 3 secondes)
 
         //Si la première image de fond est complètement hors de l'écran, alors ce sera plus petit que 0
         //On déplace alors la première image de fond à droite de l'écran.
@@ -140,8 +169,21 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                player.up = true
-                player.down = false
+                val touchX = event.x
+                val touchY = event.y
+                // Vérifiez si le clic est à l'intérieur des coordonnées du bouton de pause
+                if (isPlaying){
+                    if (touchX >= buttonX && touchX <= buttonX + pausebutton.width && touchY >= buttonY && touchY <= buttonY + pausebutton.height){
+                        pause()}
+                    player.up = true
+                    player.down = false
+                    }
+
+                //if (isPlaying == false){
+                    //if (touchX >= buttonX && touchX <= buttonX + pausebutton.width && touchY >= buttonY && touchY <= buttonY + pausebutton.height){
+                        //resume()
+                    //}
+                //}
             }
 
             MotionEvent.ACTION_UP -> {
@@ -152,6 +194,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         return true
     }
 }
+
+
 
 
 
