@@ -25,7 +25,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private var pausebutton : Bitmap
     private val buttonX : Int
     private val buttonY : Int
-    private val enemy : Enemy
     init {
         isPlaying = false
         background1 = Background(screenXParam, screenYParam, resources)
@@ -45,7 +44,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         score = 0
         buttonX = 100
         buttonY = 50
-        enemy = Enemy(resources)
     }
 
     override fun run() {
@@ -60,10 +58,10 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         isPlaying = true
         thread = Thread(this)
         thread?.start()
+
     }
 
     fun pause() {
-
         try {
             isPlaying = false
             thread?.join()
@@ -112,10 +110,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 player.y.toFloat(),
                 paint
             )
-
-
-            canvas.drawBitmap(enemy.enemy, enemy.x.toFloat(), enemy.y.toFloat(), paint)
-
 
 
             //On dessine le canvas sur la vue.
@@ -169,14 +163,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             player.y = 750
         }
 
-        if (enemy.x +enemy.width < 0){
-            enemy.spawn(screenY, player.y)
-        }
-        enemy.x -= enemy.speed
-
-
-
-
     }
 
 
@@ -186,6 +172,13 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 val touchX = event.x
                 val touchY = event.y
                 // Vérifiez si le clic est à l'intérieur des coordonnées du bouton de pause
+                if (isPlaying == false){
+                    if (touchX >= buttonX && touchX <= buttonX + pausebutton.width && touchY >= buttonY && touchY <= buttonY + pausebutton.height){
+                        resume()
+                        sleep()
+                    }
+                }
+
                 if (isPlaying){
                     if (touchX >= buttonX && touchX <= buttonX + pausebutton.width && touchY >= buttonY && touchY <= buttonY + pausebutton.height){
                         pause()}
@@ -193,11 +186,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                     player.down = false
                     }
 
-                //if (isPlaying == false){
-                    //if (touchX >= buttonX && touchX <= buttonX + pausebutton.width && touchY >= buttonY && touchY <= buttonY + pausebutton.height){
-                        //resume()
-                    //}
-                //}
             }
 
             MotionEvent.ACTION_UP -> {
