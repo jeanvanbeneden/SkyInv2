@@ -1,6 +1,6 @@
 package com.example.skyinv2
 
-import android.graphics.Point
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager

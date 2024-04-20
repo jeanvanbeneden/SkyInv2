@@ -25,6 +25,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private var pausebutton : Bitmap
     private val buttonX : Int
     private val buttonY : Int
+    private val enemy : Enemy
     init {
         isPlaying = false
         background1 = Background(screenXParam, screenYParam, resources)
@@ -44,6 +45,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         score = 0
         buttonX = 100
         buttonY = 50
+        enemy = Enemy(resources)
     }
 
     override fun run() {
@@ -112,6 +114,10 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             )
 
 
+            canvas.drawBitmap(enemy.enemy, enemy.x.toFloat(), enemy.y.toFloat(), paint)
+
+
+
             //On dessine le canvas sur la vue.
             //holder est un objet de type SurfaceHolder qui représente la surface de dessin de la vue.
             holder.unlockCanvasAndPost(canvas)
@@ -162,6 +168,14 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         if (player.y > 750){
             player.y = 750
         }
+
+        if (enemy.x +enemy.width < 0){
+            enemy.spawn(screenY, player.y)
+        }
+        enemy.x -= enemy.speed
+
+
+
 
     }
 
