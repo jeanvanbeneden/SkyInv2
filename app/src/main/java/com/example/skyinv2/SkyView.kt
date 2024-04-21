@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.SurfaceView
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
 
 @SuppressLint("ViewConstructor")
 class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : SurfaceView(context), Runnable {
@@ -29,6 +30,12 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private var enemies : MutableList<Enemy>
     private var numberOfEnemies : Int
     private lateinit var scorethread : Thread
+    private val missile : Missile
+    private val numberOfMissiles : Int
+    private val missiles : MutableList<Missile>
+    private var missilactif : Boolean = false
+    //private val customfont : Typeface
+
     init {
         isPlaying = false
         background1 = Background(screenXParam, screenYParam, resources)
@@ -38,6 +45,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         paint = Paint()
         paint.textSize = 80f
         paint.color = Color.rgb(0, 0, 0 )
+
+        paint.isAntiAlias = true
 
         screenX = screenXParam
         screenY = screenYParam
@@ -60,6 +69,12 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             enemies.add(Enemy(resources))
         }
         numberOfEnemies = 0
+
+
+        numberOfMissiles = 0
+        missile = Missile(player.x, player.y, numberOfMissiles , screenY, screenX, resources)
+        missiles = mutableListOf()
+        //customfont =Typeface.createFromAsset(context.assets, "font/blood_patter.ttf")
     }
 
     override fun run() {
@@ -82,7 +97,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             }
         }
         scorethread.start()
-
     }
 
     fun pause() {
@@ -116,7 +130,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 background2.y.toFloat(),
                 paint
             )
-
+            //paint.typeface = customfont
             canvas.drawText(
                 "Score: $score ",
                 1700f ,
@@ -134,6 +148,13 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 player.y.toFloat(),
                 paint
             )
+            for (missile in missiles) {
+                    canvas.drawBitmap(
+                        missile.missile,
+                        missile.x.toFloat(),
+                        missile.y.toFloat(),
+                        paint)
+                    }
 
             for (enemy in enemies){
                 canvas.drawBitmap(
@@ -199,6 +220,12 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         }
 
 
+        for(missile in missiles){
+            if(missile.active){
+            missile.Moveforward()
+            }
+        }
+
 
         for (enemy in enemies){
             if (enemy.x < -250){
@@ -218,18 +245,31 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             MotionEvent.ACTION_DOWN -> {
                 val touchX = event.x
                 val touchY = event.y
+
                 // Vérifie si le toucher est dans les coordonnées du bouton de pause
                 if (touchX >= buttonX && touchX <= buttonX + pausebutton.width && touchY >= buttonY && touchY <= buttonY + pausebutton.height) {
                     if (isPlaying) {
                         pause()  // Met le jeu en pause
                     } else {
-                        resume()  // Reprend le jeu
+                        resume() // Reprend le jeu
                     }
                     return true
                 }
-                // Gestion du mouvement du joueur
-                player.up = true
-                player.down = false
+
+                if(touchX>=1000){
+                    //missilactif = true // Active le missile
+                    missile.x = player.x + 40
+                    missile.y = player.y + player.player.height / 2 + missile.missile.height / 2 - 20
+                    val newMissile= Missile(missile.x,missile.y,numberOfMissiles, screenX , screenY, resources )
+                    missiles.add(newMissile)
+                    newMissile.active = true
+                    score -=4
+                    }
+                else {
+                    // Gestion du mouvement du joueur
+                    player.up = true
+                    player.down = false
+                    }
             }
 
             MotionEvent.ACTION_UP -> {
