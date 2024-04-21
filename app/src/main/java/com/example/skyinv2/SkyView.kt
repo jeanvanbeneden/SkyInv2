@@ -171,21 +171,18 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             MotionEvent.ACTION_DOWN -> {
                 val touchX = event.x
                 val touchY = event.y
-                // Vérifiez si le clic est à l'intérieur des coordonnées du bouton de pause
-                if (isPlaying == false){
-                    if (touchX >= buttonX && touchX <= buttonX + pausebutton.width && touchY >= buttonY && touchY <= buttonY + pausebutton.height){
-                        resume()
-                        sleep()
+                // Vérifie si le toucher est dans les coordonnées du bouton de pause
+                if (touchX >= buttonX && touchX <= buttonX + pausebutton.width && touchY >= buttonY && touchY <= buttonY + pausebutton.height) {
+                    if (isPlaying) {
+                        pause()  // Met le jeu en pause
+                    } else {
+                        resume()  // Reprend le jeu
                     }
+                    return true
                 }
-
-                if (isPlaying){
-                    if (touchX >= buttonX && touchX <= buttonX + pausebutton.width && touchY >= buttonY && touchY <= buttonY + pausebutton.height){
-                        pause()}
-                    player.up = true
-                    player.down = false
-                    }
-
+                // Gestion du mouvement du joueur
+                player.up = true
+                player.down = false
             }
 
             MotionEvent.ACTION_UP -> {
@@ -196,11 +193,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         return true
     }
 }
-
-
-
-
-
 
 
 
