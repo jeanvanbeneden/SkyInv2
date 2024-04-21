@@ -28,7 +28,18 @@ class Enemy (res : Resources){
     }
 
 
-    fun spawn(screenHeight: Int, playerY : Int){
+    fun spawn(screenHeight: Int, playerY : Int, enemies : MutableList<Enemy>){
+
+
+        // cette variable newY est utilisée pour stocker la position y de l'ennemi
+        var newY: Int
+        // cette boucle do while permet de vérifier si la position y de l'ennemi est déjà occupée par un autre ennemi
+        do {
+            // on génère une nouvelle position y pour l'ennemi
+            newY = (0..screenHeight-150).random()
+            // on vérifie si la position y de l'ennemi est déjà occupée par un autre ennemi
+        } while (enemies.any { enemy -> Math.abs(enemy.y - newY) < height })
+
 
         when (playerY) {
             750 -> {

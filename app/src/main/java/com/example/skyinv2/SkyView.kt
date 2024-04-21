@@ -26,6 +26,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private val buttonX : Int
     private val buttonY : Int
     private var enemy : Enemy
+    private var enemies : MutableList<Enemy>
+    private var numberOfEnemies : Int
     init {
         isPlaying = false
         background1 = Background(screenXParam, screenYParam, resources)
@@ -46,6 +48,11 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         buttonX = 100
         buttonY = 50
         enemy = Enemy(resources)
+        enemies = mutableListOf()
+        for (i in 0..2){
+            enemies.add(Enemy(resources))
+        }
+        numberOfEnemies = 0
     }
 
     override fun run() {
@@ -113,12 +120,14 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 paint
             )
 
-            canvas.drawBitmap(
-                enemy.enemy,
-                enemy.x.toFloat(),
-                enemy.y.toFloat(),
-                paint
-            )
+            for (enemy in enemies){
+                canvas.drawBitmap(
+                    enemy.enemy,
+                    enemy.x.toFloat(),
+                    enemy.y.toFloat(),
+                    paint
+                )
+            }
 
 
 
@@ -175,11 +184,18 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             player.y = 750
         }
 
-        if (enemy.x < 0){
-            enemy.spawn(screenY, player.y)
-        }
-        enemy.x -= enemy.speed
 
+
+        for (enemy in enemies){
+            if (enemy.x < -250){
+
+                    enemy.spawn(screenY, player.y, enemies)
+                    numberOfEnemies++
+                }
+
+
+            enemy.x -= enemy.speed
+            }
     }
 
 
