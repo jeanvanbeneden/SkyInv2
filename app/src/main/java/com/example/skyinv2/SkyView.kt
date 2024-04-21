@@ -28,25 +28,32 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private var enemy : Enemy
     private var enemies : MutableList<Enemy>
     private var numberOfEnemies : Int
+    private lateinit var scorethread : Thread
     init {
         isPlaying = false
         background1 = Background(screenXParam, screenYParam, resources)
         background2 = Background(screenXParam, screenYParam, resources)
         background2.x = screenXParam
+
         paint = Paint()
+        paint.textSize = 80f
+        paint.color = Color.rgb(0, 0, 0 )
+
         screenX = screenXParam
         screenY = screenYParam
+
         player = Player(screenYParam, screenXParam, resources)
-        paint.textSize = 80f
+
         pausebutton = BitmapFactory.decodeResource(resources, R.drawable.pausebutton)
-        val width = pausebutton.width / 10  // Nouvelle largeur (par exemple, la moitié de la largeur d'origine)
-        val height = pausebutton.height / 10  // Nouvelle hauteur (par exemple, la moitié de la hauteur d'origine)
+        val width = pausebutton.width / 10  // Nouvelle largeur (ici, le 10eme de la largeur d'origine)
+        val height = pausebutton.height / 10  // Nouvelle hauteur (ici, le 10eme de la hauteur d'origine)
         pausebutton = Bitmap.createScaledBitmap(pausebutton, width, height, true)
-        paint.color = Color.rgb(0, 0, 0 )
         etat = "Pause"
-        score = 0
         buttonX = 100
         buttonY = 50
+
+        score = 0
+
         enemy = Enemy(resources)
         enemies = mutableListOf()
         for (i in 0..2){
@@ -67,6 +74,14 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         isPlaying = true
         thread = Thread(this)
         thread?.start()
+
+        scorethread = Thread {
+            while (isPlaying) {
+                Thread.sleep(500) // Une pause de 3 secondes
+                score++
+            }
+        }
+        scorethread.start()
 
     }
 
@@ -155,10 +170,9 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     //Chaque fois que la méthode update est appelée, on déplace les deux images de fond vers la gauche de 10 pixels.
     private fun update() {
 
+
         background1.x -= 10
         background2.x -= 10
-
-        score++ //je dois encore créer un nouveau thread qui execute un timer avant d'incrementer de 1 le score (1 points = 3 secondes)
 
         //Si la première image de fond est complètement hors de l'écran, alors ce sera plus petit que 0
         //On déplace alors la première image de fond à droite de l'écran.
