@@ -8,8 +8,8 @@ class Player (screenY : Int, screenX: Int, res : Resources){
     val x : Int
     var y : Int
     var player : Bitmap
-    private var width : Int
-    private var height : Int
+    var width : Int
+    var height : Int
     var up : Boolean
     var down : Boolean
 

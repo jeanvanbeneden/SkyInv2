@@ -3,10 +3,13 @@ package com.example.skyinv2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.WindowManager
+import android.widget.FrameLayout
+import android.widget.TextView
 
 
-    class SkyInvActivity : AppCompatActivity() {
+class SkyInvActivity : AppCompatActivity() {
 
         private lateinit var skyView: SkyView
 
@@ -22,6 +25,10 @@ import android.view.WindowManager
             val screenHeight = resources.displayMetrics.heightPixels
             val screenWidth = resources.displayMetrics.widthPixels
             skyView = SkyView(this, screenWidth, screenHeight)
+
+
+
+
 
             //ici on affiche la vue sur l'écran
             setContentView(skyView)

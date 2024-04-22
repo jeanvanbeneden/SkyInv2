@@ -1,6 +1,7 @@
 package com.example.skyinv2
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
@@ -9,6 +10,9 @@ import android.view.SurfaceView
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Typeface
+import android.view.Gravity
+import android.widget.FrameLayout
+import android.widget.TextView
 
 @SuppressLint("ViewConstructor")
 class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : SurfaceView(context), Runnable {
@@ -34,6 +38,26 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private val numberOfMissiles : Int
     private val missiles : MutableList<Missile>
     private var missilactif : Boolean = false
+    private var speedCol : Collectable
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //private val customfont : Typeface
 
     init {
@@ -75,6 +99,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         missile = Missile(player.x, player.y, numberOfMissiles , screenY, screenX, resources)
         missiles = mutableListOf()
         //customfont =Typeface.createFromAsset(context.assets, "font/blood_patter.ttf")
+
+        speedCol = Collectable(resources)
     }
 
     override fun run() {
@@ -165,6 +191,13 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 )
             }
 
+            canvas.drawBitmap(
+                speedCol.speedcol,
+                speedCol.x.toFloat(),
+                speedCol.y.toFloat(),
+                paint
+            )
+
 
 
 
@@ -237,6 +270,14 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
 
             enemy.x -= enemy.speed
             }
+
+
+
+        if (speedCol.x < -2000){
+            speedCol.spawn(screenY)
+        }
+        speedCol.x -= speedCol.speed
+        speedCol.speedeffect(player, enemies)
     }
 
 

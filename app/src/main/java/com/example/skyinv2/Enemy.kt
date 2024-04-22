@@ -18,7 +18,7 @@ class Enemy (res : Resources){
         enemy = BitmapFactory.decodeResource(res, R.drawable.enemy)
         x = 2000
         y= 100
-        speed = (15..30).random()
+        speed = (15..17).random()
         height = enemy.height
         width = enemy.width
         enemy = Bitmap.createScaledBitmap(enemy, width, height, false)
