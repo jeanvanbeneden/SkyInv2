@@ -277,6 +277,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 player.up = false
             }
         }
+        //eheugeguyuygyugyuez
         return true
     }
 }
