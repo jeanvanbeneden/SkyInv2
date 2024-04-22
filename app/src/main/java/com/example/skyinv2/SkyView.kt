@@ -25,20 +25,21 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private val player: Player
     private var score : Int
     private var etat : String
-    //On crée un objet Paint pour dessiner les images de fond.
     private val paint: Paint
     private var pausebutton : Bitmap
     private val buttonX : Int
     private val buttonY : Int
-    private var enemy : Enemy
-    private var enemies : MutableList<Enemy>
-    private var numberOfEnemies : Int
     private lateinit var scorethread : Thread
     private val missile : Missile
     private val numberOfMissiles : Int
     private val missiles : MutableList<Missile>
     private var missilactif : Boolean = false
     private var speedCol : Collectable
+    private var enemyFollower : FollowerEnemy
+    private var straightEnemy : StraightEnemy
+    private var straightenemies : MutableList<StraightEnemy>
+
+
 
 
 
@@ -65,18 +66,13 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         background1 = Background(screenXParam, screenYParam, resources)
         background2 = Background(screenXParam, screenYParam, resources)
         background2.x = screenXParam
-
         paint = Paint()
         paint.textSize = 80f
         paint.color = Color.rgb(0, 0, 0 )
-
         paint.isAntiAlias = true
-
         screenX = screenXParam
         screenY = screenYParam
-
         player = Player(screenYParam, screenXParam, resources)
-
         pausebutton = BitmapFactory.decodeResource(resources, R.drawable.pausebutton)
         val width = pausebutton.width / 10  // Nouvelle largeur (ici, le 10eme de la largeur d'origine)
         val height = pausebutton.height / 10  // Nouvelle hauteur (ici, le 10eme de la hauteur d'origine)
@@ -84,23 +80,18 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         etat = "Pause"
         buttonX = 100
         buttonY = 50
-
         score = 0
-
-        enemy = Enemy(resources)
-        enemies = mutableListOf()
-        for (i in 0..2){
-            enemies.add(Enemy(resources))
-        }
-        numberOfEnemies = 0
-
-
         numberOfMissiles = 0
         missile = Missile(player.x, player.y, numberOfMissiles , screenY, screenX, resources)
         missiles = mutableListOf()
         //customfont =Typeface.createFromAsset(context.assets, "font/blood_patter.ttf")
-
         speedCol = Collectable(resources)
+        enemyFollower = FollowerEnemy(resources)
+        straightEnemy = StraightEnemy(resources)
+        straightenemies = mutableListOf()
+        for (i in 0..2){
+            straightenemies.add(StraightEnemy(resources))
+        }
     }
 
     override fun run() {
@@ -163,9 +154,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 150f,
                 paint
             )
-
             canvas.drawBitmap(pausebutton, buttonX.toFloat(), buttonY.toFloat(), paint)   //affiche le logo play/pause cliquable
-
 
             //Le player.x et player.y sont les coordonnées du coin supérieur gauche de l'image du joueur.
             canvas.drawBitmap(
@@ -181,35 +170,31 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                         missile.y.toFloat(),
                         paint)
                     }
-
-            for (enemy in enemies){
-                canvas.drawBitmap(
-                    enemy.enemy,
-                    enemy.x.toFloat(),
-                    enemy.y.toFloat(),
-                    paint
-                )
-            }
-
             canvas.drawBitmap(
                 speedCol.speedcol,
                 speedCol.x.toFloat(),
                 speedCol.y.toFloat(),
                 paint
             )
-
-
-
-
-
+            for (straightEnemy in straightenemies){
+                canvas.drawBitmap(
+                    straightEnemy.straightEnemy,
+                    straightEnemy.x.toFloat(),
+                    straightEnemy.y.toFloat(),
+                    paint
+                )
+            }
+            canvas.drawBitmap(
+                enemyFollower.enemyfollower,
+                enemyFollower.x.toFloat(),
+                enemyFollower.y.toFloat(),
+                paint
+            )
             //On dessine le canvas sur la vue.
             //holder est un objet de type SurfaceHolder qui représente la surface de dessin de la vue.
             holder.unlockCanvasAndPost(canvas)
-
-
         }
     }
-
 
     //La méthode sleep fait dormir le thread pendant 17 millisecondes.
     private fun sleep() {
@@ -260,16 +245,21 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         }
 
 
-        for (enemy in enemies){
-            if (enemy.x < -250){
-
-                    enemy.spawn(screenY, player.y, enemies)
-                    numberOfEnemies++
-                }
 
 
-            enemy.x -= enemy.speed
+        for (straightEnemy in straightenemies){
+            if (straightEnemy.x < -250){
+                straightEnemy.spawn(screenY, player.y)
+                straightEnemy.spawn2(screenY, player.y, straightenemies, straightEnemy.height)
             }
+            straightEnemy.x -= straightEnemy.speed
+        }
+
+
+        if (enemyFollower.x < -250){
+            enemyFollower.spawn(screenY, player.y)
+        }
+        enemyFollower.x -= enemyFollower.speed
 
 
 
@@ -277,7 +267,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             speedCol.spawn(screenY)
         }
         speedCol.x -= speedCol.speed
-        speedCol.speedeffect(player, enemies)
+        speedCol.speedeffect(player, straightenemies, enemyFollower)
     }
 
 
