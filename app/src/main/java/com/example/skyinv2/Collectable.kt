@@ -46,8 +46,6 @@ class Collectable (res : Resources){
             for(enemy in enemies){
                 enemy.speed += 1
             }
-
-
         }
     }
 
