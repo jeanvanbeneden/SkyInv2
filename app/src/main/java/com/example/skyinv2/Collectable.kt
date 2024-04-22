@@ -18,11 +18,11 @@ class Collectable (res : Resources){
         x = 2000
         y = 100
         speed = 15
-        speedcol = BitmapFactory.decodeResource(res, R.drawable.speedcol)
+        speedcol = BitmapFactory.decodeResource(res, R.drawable.speedcolok)
         widthsp = speedcol.width
-        widthsp /= 5
+        widthsp /= 12
         heightsp = speedcol.height
-        heightsp /= 5
+        heightsp /= 12
         speedcol = Bitmap.createScaledBitmap(speedcol, widthsp, heightsp, false)
 
 
