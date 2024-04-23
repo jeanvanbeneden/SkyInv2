@@ -283,6 +283,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         for (objectToDelete in enemydestruction) {
             straightenemies.remove(objectToDelete)
         }
+
         enemydestruction.clear()
 
 
