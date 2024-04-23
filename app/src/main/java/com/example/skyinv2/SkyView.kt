@@ -38,7 +38,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private var enemyFollower : FollowerEnemy
     private var straightEnemy : StraightEnemy
     private var straightenemies : MutableList<StraightEnemy>
-
+    private var object_destruction : MutableList<Missile>
 
 
 
@@ -92,6 +92,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         for (i in 0..2){
             straightenemies.add(StraightEnemy(resources))
         }
+        object_destruction = mutableListOf()
+
     }
 
     override fun run() {
@@ -237,8 +239,19 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             player.y = 750
         }
 
+        for (missile in missiles) {
+            if(missile.x >= 2200)  {
+                object_destruction.add(missile)
+            }
+        }
 
-        for(missile in missiles){
+        for (objectToDelete in object_destruction) {
+            missiles.remove(objectToDelete)
+        }
+        object_destruction.clear()
+
+
+            for(missile in missiles){
             if(missile.active){
             missile.Moveforward()
             }
