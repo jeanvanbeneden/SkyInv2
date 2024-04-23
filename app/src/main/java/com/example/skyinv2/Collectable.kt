@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
-class Collectable (res : Resources){
+class Collectable (res : Resources) {
     var x : Int
     var y : Int
     var speedcol : Bitmap
@@ -32,7 +32,7 @@ class Collectable (res : Resources){
 
     fun spawn (screenY : Int){
         x = 2000
-        y = (0..screenY).random()
+        y = (0..screenY-75).random()
         if (x<-2000){
             x=2000
         }

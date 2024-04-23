@@ -6,7 +6,7 @@ open class Enemyy {
 
     var x: Int
     var y: Int
-    var speedIncrease: Int
+    protected var speedIncrease: Int
     var speed: Int
 
     init {

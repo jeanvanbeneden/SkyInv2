@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
-class Player (screenY : Int, screenX: Int, res : Resources){
+class Player (screenY : Int, screenX: Int, res : Resources) : GameObject{
     val x : Int
     var y : Int
     var player : Bitmap
@@ -26,6 +26,15 @@ class Player (screenY : Int, screenX: Int, res : Resources){
         down = true
     }
 
+    override fun interactions() {
+        TODO("Not yet implemented")
+    }
+    override fun move() {
+        if (up){
+            moveUp()}
+        if(down){
+        moveDown()}
+    }
 
     fun moveUp(){
         y -= 7

@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
-class Missile ( playerx : Int ,playery : Int, nombre : Int,ScreenY : Int, ScreenX : Int, res : Resources) {
+class Missile (playerx : Int ,playery : Int, nombre : Int, ScreenY : Int, ScreenX : Int, res : Resources) : GameObject {
     var missile: Bitmap
     var y: Int
     var x: Int
@@ -24,7 +24,14 @@ class Missile ( playerx : Int ,playery : Int, nombre : Int,ScreenY : Int, Screen
 
     }
 
+    override fun interactions() {
+        TODO("Not yet implemented")
+    }
+    override fun move(){
+        Moveforward()
+    }
     fun Moveforward() {
         x += 15
     }
+
 }

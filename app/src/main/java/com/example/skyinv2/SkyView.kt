@@ -33,7 +33,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private val missile : Missile
     private val numberOfMissiles : Int
     private val missiles : MutableList<Missile>
-    private var missilactif : Boolean = false
     private var speedCol : Collectable
     private var enemyFollower : FollowerEnemy
     private var straightEnemy : StraightEnemy
@@ -225,13 +224,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             background2.x = screenX
         }
 
-        if (player.up) {
-            player.moveUp()
-        }
+        player.move()
 
-        if (player.down) {
-            player.moveDown()
-        }
         if (player.y <-150){
             player.y = -150
         }
@@ -240,7 +234,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         }
 
         for (missile in missiles) {
-            if(missile.x >= 2200)  {
+            if(missile.x >= screenX)  {
                 object_destruction.add(missile)
             }
         }
@@ -253,7 +247,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
 
             for(missile in missiles){
             if(missile.active){
-            missile.Moveforward()
+            missile.move()
             }
         }
 
@@ -265,14 +259,16 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 straightEnemy.spawn(screenY, player.y)
                 straightEnemy.spawn2(screenY, player.y, straightenemies, straightEnemy.height)
             }
-            straightEnemy.x -= straightEnemy.speed
+            straightEnemy.move()
+            //straightEnemy.x -= straightEnemy.speed
         }
 
 
         if (enemyFollower.x < -250){
             enemyFollower.spawn(screenY, player.y)
         }
-        enemyFollower.x -= enemyFollower.speed
+        enemyFollower.move() //c'est move dans la classe en quetion qui va redéfinir le déplacement
+        //enemyFollower.x -= enemyFollower.speed
 
 
 
@@ -321,7 +317,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 player.up = false
             }
         }
-        //eheugeguyuygyugyuez
+
         return true
     }
 }
