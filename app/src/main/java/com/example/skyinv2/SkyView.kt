@@ -261,29 +261,20 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 enemydestruction.add(enemy)
                 enemy.spawn(screenY, player.y)
                 enemy.x -= enemy.speed
-
             }
-
         }
-
-
-
         if (straightenemies.size < 2) {
             val newEnemy = StraightEnemy(resources)
             newEnemy.spawn(screenY, player.y)
             newEnemy.x -= newEnemy.speed
             straightenemies.add(newEnemy)
         }
-
         for (enemy in straightenemies){
             enemy.x -= enemy.speed
         }
-
-
         for (objectToDelete in enemydestruction) {
             straightenemies.remove(objectToDelete)
         }
-
         enemydestruction.clear()
 
 
