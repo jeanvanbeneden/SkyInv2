@@ -33,11 +33,13 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private val missile : Missile
     private val numberOfMissiles : Int
     private val missiles : MutableList<Missile>
+    private var missilactif : Boolean = false
     private var speedCol : Collectable
     private var enemyFollower : FollowerEnemy
     private var straightEnemy : StraightEnemy
     private var straightenemies : MutableList<StraightEnemy>
     private var object_destruction : MutableList<Missile>
+    private var enemydestruction : MutableList<StraightEnemy>
 
 
 
@@ -88,10 +90,13 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         enemyFollower = FollowerEnemy(resources)
         straightEnemy = StraightEnemy(resources)
         straightenemies = mutableListOf()
-        for (i in 0..2){
-            straightenemies.add(StraightEnemy(resources))
-        }
+
+
+
+
         object_destruction = mutableListOf()
+        enemydestruction = mutableListOf()
+
 
     }
 
@@ -210,65 +215,88 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     //Chaque fois que la méthode update est appelée, on déplace les deux images de fond vers la gauche de 10 pixels.
     private fun update() {
 
-
         background1.x -= 10
         background2.x -= 10
-
         //Si la première image de fond est complètement hors de l'écran, alors ce sera plus petit que 0
         //On déplace alors la première image de fond à droite de l'écran.
         if (background1.x + background1.background.width < 0) {
             background1.x = screenX
         }
-
         if (background2.x + background2.background.width < 0) {
             background2.x = screenX
         }
-
-        player.move()
-
+        if (player.up) {
+            player.moveUp()
+        }
+        if (player.down) {
+            player.moveDown()
+        }
         if (player.y <-150){
             player.y = -150
         }
         if (player.y > 750){
             player.y = 750
         }
-
         for (missile in missiles) {
-            if(missile.x >= screenX)  {
+            if(missile.x >= 2200)  {
                 object_destruction.add(missile)
             }
         }
-
         for (objectToDelete in object_destruction) {
             missiles.remove(objectToDelete)
         }
         object_destruction.clear()
 
-
-            for(missile in missiles){
+        for(missile in missiles){
             if(missile.active){
-            missile.move()
+                missile.Moveforward()
             }
         }
 
 
 
 
-        for (straightEnemy in straightenemies){
-            if (straightEnemy.x < -250){
-                straightEnemy.spawn(screenY, player.y)
-                straightEnemy.spawn2(screenY, player.y, straightenemies, straightEnemy.height)
+        for (enemy in straightenemies){
+            if (enemy.x < -250){
+                enemydestruction.add(enemy)
+                enemy.spawn(screenY, player.y)
+                enemy.x -= enemy.speed
+
             }
-            straightEnemy.move()
-            //straightEnemy.x -= straightEnemy.speed
+
         }
+
+
+
+        if (straightenemies.size < 2) {
+            val newEnemy = StraightEnemy(resources)
+            newEnemy.spawn(screenY, player.y)
+            newEnemy.x -= newEnemy.speed
+            straightenemies.add(newEnemy)
+        }
+
+        for (enemy in straightenemies){
+            enemy.x -= enemy.speed
+        }
+
+
+        for (objectToDelete in enemydestruction) {
+            straightenemies.remove(objectToDelete)
+        }
+        enemydestruction.clear()
+
+
+
+
+
+
+
 
 
         if (enemyFollower.x < -250){
             enemyFollower.spawn(screenY, player.y)
         }
-        enemyFollower.move() //c'est move dans la classe en quetion qui va redéfinir le déplacement
-        //enemyFollower.x -= enemyFollower.speed
+        enemyFollower.x -= enemyFollower.speed
 
 
 
@@ -277,6 +305,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         }
         speedCol.x -= speedCol.speed
         speedCol.speedeffect(player, straightenemies, enemyFollower)
+
+
     }
 
 
@@ -317,7 +347,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 player.up = false
             }
         }
-
+        //eheugeguyuygyugyuez
         return true
     }
 }

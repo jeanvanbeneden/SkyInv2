@@ -19,10 +19,11 @@ open class Enemyy {
 
     // cette fonction spawn permet de générer un ennemi à une position aléatoire sur l'écran
     open fun spawn(screenHeight: Int, playerY: Int) {
-        x = 2000
+        x = 2200
         y = (0..screenHeight - 150).random()
         speedIncrease += 0.5.toInt()
         speed += speedIncrease
+
     }
 
     open fun spawn2(screenHeight: Int, playerY: Int, enemies: MutableList<StraightEnemy>, height : Int) {
