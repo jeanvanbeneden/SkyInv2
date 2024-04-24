@@ -36,7 +36,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private var missilactif : Boolean = false
     private var speedCol : Collectable
     private var enemyFollower : FollowerEnemy
-
     private var straightenemies : MutableList<StraightEnemy>
     private var object_destruction : MutableList<Missile>
     private var enemydestruction : MutableList<StraightEnemy>

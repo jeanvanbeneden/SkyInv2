@@ -47,6 +47,8 @@ class Collectable (res : Resources) {
                 enemy.speed += 1
             }
             enemy2.speed += 1
+            background1.speed = 20
+            background2.speed = 20
         }
     }
 
