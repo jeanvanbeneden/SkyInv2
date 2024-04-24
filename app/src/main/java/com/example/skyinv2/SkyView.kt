@@ -36,7 +36,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private var missilactif : Boolean = false
     private var speedCol : Collectable
     private var enemyFollower : FollowerEnemy
-    private var straightEnemy : StraightEnemy
+
     private var straightenemies : MutableList<StraightEnemy>
     private var object_destruction : MutableList<Missile>
     private var enemydestruction : MutableList<StraightEnemy>
@@ -88,7 +88,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         //customfont =Typeface.createFromAsset(context.assets, "font/blood_patter.ttf")
         speedCol = Collectable(resources)
         enemyFollower = FollowerEnemy(resources)
-        straightEnemy = StraightEnemy(resources)
+
         straightenemies = mutableListOf()
 
 
@@ -215,8 +215,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     //Chaque fois que la méthode update est appelée, on déplace les deux images de fond vers la gauche de 10 pixels.
     private fun update() {
 
-        background1.x -= 10
-        background2.x -= 10
+        background1.x -= background1.speed
+        background2.x -= background2.speed
         //Si la première image de fond est complètement hors de l'écran, alors ce sera plus petit que 0
         //On déplace alors la première image de fond à droite de l'écran.
         if (background1.x + background1.background.width < 0) {
@@ -254,24 +254,23 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         }
 
 
-
-
-        for (enemy in straightenemies){
-            if (enemy.x < -250){
-                enemydestruction.add(enemy)
-                enemy.spawn(screenY, player.y)
-                enemy.x -= enemy.speed
-            }
-        }
         if (straightenemies.size < 2) {
             val newEnemy = StraightEnemy(resources)
             newEnemy.spawn(screenY, player.y)
+            newEnemy.spawn2(screenY, player.y, straightenemies, newEnemy.height)
             newEnemy.x -= newEnemy.speed
             straightenemies.add(newEnemy)
         }
         for (enemy in straightenemies){
             enemy.x -= enemy.speed
         }
+
+        for (enemy in straightenemies){
+            if (enemy.x < -250){
+                enemydestruction.add(enemy)
+            }
+        }
+
         for (objectToDelete in enemydestruction) {
             straightenemies.remove(objectToDelete)
         }
@@ -296,7 +295,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             speedCol.spawn(screenY)
         }
         speedCol.x -= speedCol.speed
-        speedCol.speedeffect(player, straightenemies, enemyFollower)
+        speedCol.speedeffect(player, straightenemies, enemyFollower, background1, background2)
 
 
     }

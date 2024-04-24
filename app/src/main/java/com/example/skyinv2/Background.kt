@@ -8,6 +8,7 @@ class Background (screenX: Int, screenY: Int, res: Resources){
     var x : Int
     var y : Int
     var background : Bitmap
+    var speed : Int
 
 
     init {
@@ -15,6 +16,7 @@ class Background (screenX: Int, screenY: Int, res: Resources){
         y = 0
         background = BitmapFactory.decodeResource(res, R.drawable.backgroundwar)
         background = Bitmap.createScaledBitmap(background, screenX, screenY, false)
+        speed = 10
     }
 }
 

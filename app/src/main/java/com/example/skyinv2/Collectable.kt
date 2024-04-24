@@ -38,7 +38,7 @@ class Collectable (res : Resources) {
         }
     }
 
-    fun speedeffect(player: Player, enemies: MutableList<StraightEnemy>, enemy2 : FollowerEnemy){
+    fun speedeffect(player: Player, enemies: MutableList<StraightEnemy>, enemy2 : FollowerEnemy, background1 : Background, background2: Background){
         if (player.x < x + widthsp &&
             player.x + player.width > x &&
             player.y < y + heightsp &&
