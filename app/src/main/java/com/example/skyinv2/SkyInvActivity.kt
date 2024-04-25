@@ -12,7 +12,7 @@ import android.widget.TextView
 class SkyInvActivity : AppCompatActivity() {
 
         private lateinit var skyView: SkyView
-
+        private lateinit var collectable: Collectable
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -24,7 +24,8 @@ class SkyInvActivity : AppCompatActivity() {
 
             val screenHeight = resources.displayMetrics.heightPixels
             val screenWidth = resources.displayMetrics.widthPixels
-            skyView = SkyView(this, screenWidth, screenHeight)
+            collectable = Collectable(resources, screenHeight)
+            skyView = SkyView(this, screenWidth, screenHeight, collectable)
 
 
 

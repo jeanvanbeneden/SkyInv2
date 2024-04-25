@@ -15,7 +15,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 
 @SuppressLint("ViewConstructor")
-class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : SurfaceView(context), Runnable {
+class SkyView(context: Context, screenXParam : Int, screenYParam : Int, private val collectable: Collectable) : SurfaceView(context), Runnable {
     private var thread: Thread? = null
     private var isPlaying: Boolean
     private var background1: Background
@@ -38,6 +38,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private var straightenemies : MutableList<StraightEnemy>
     private var object_destruction : MutableList<Missile>
     private var enemydestruction : MutableList<StraightEnemy>
+    private var speedcoldestruction : MutableList<Collectable>
+    private var coindestruction : MutableList<Collectable>
 
 
 
@@ -57,8 +59,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
 
 
 
-
-    //private val customfont : Typeface
 
     init {
         isPlaying = false
@@ -73,8 +73,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         screenY = screenYParam
         player = Player(screenYParam, screenXParam, resources)
         pausebutton = BitmapFactory.decodeResource(resources, R.drawable.pausebutton)
-        val width = pausebutton.width / 10  // Nouvelle largeur (ici, le 10eme de la largeur d'origine)
-        val height = pausebutton.height / 10  // Nouvelle hauteur (ici, le 10eme de la hauteur d'origine)
+        val width = pausebutton.width / 10
+        val height = pausebutton.height / 10
         pausebutton = Bitmap.createScaledBitmap(pausebutton, width, height, true)
         etat = "Pause"
         buttonX = 100
@@ -83,17 +83,13 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         numberOfMissiles = 0
         missile = Missile(player.x, player.y, numberOfMissiles , screenY, screenX, resources)
         missiles = mutableListOf()
-        //customfont =Typeface.createFromAsset(context.assets, "font/blood_patter.ttf")
-        collected = Collectable(resources)
+        collected = Collectable(resources, screenY)
         enemyFollower = FollowerEnemy(resources)
-
         straightenemies = mutableListOf()
-
-
-
-
         object_destruction = mutableListOf()
         enemydestruction = mutableListOf()
+        speedcoldestruction = mutableListOf()
+        coindestruction = mutableListOf()
 
 
     }
@@ -110,6 +106,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         isPlaying = true
         thread = Thread(this)
         thread?.start()
+
+        collectable.spawncollectable()
 
         scorethread = Thread {
             while (isPlaying) {
@@ -175,12 +173,31 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                         missile.y.toFloat(),
                         paint)
                     }
-            canvas.drawBitmap(
-                collected.speedcol,
-                collected.x.toFloat(),
-                collected.y.toFloat(),
-                paint
-            )
+
+            for(speedcol in collectable.speedcols){
+                canvas.drawBitmap(
+                    speedcol.speedcol,
+                    speedcol.x.toFloat(),
+                    speedcol.y.toFloat(),
+                    paint
+                )
+            }
+
+            for(coin in collectable.coins){
+                canvas.drawBitmap(
+                    coin.coin,
+                    coin.x.toFloat(),
+                    coin.y.toFloat(),
+                    paint
+                )
+            }
+
+            //canvas.drawBitmap(
+                //collected.speedcol,
+                //collected.x.toFloat(),
+                //collected.y.toFloat(),
+                //paint
+            //)
 
             for (straightEnemy in straightenemies){
                 canvas.drawBitmap(
@@ -226,14 +243,8 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         if (background2.x + background2.background.width < 0) {
             background2.x = screenX
         }
-        player.move()
 
-        //if (player.up) {
-            //player.moveUp()             //toute cette condition a étét envoyé dans le move de player
-        //}
-        //if (player.down) {
-            //player.moveDown()
-        //}
+        player.move()
 
         if (player.y <-150){
             player.y = -150
@@ -241,6 +252,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         if (player.y > 750){
             player.y = 750
         }
+
         for (missile in missiles) {
             if(missile.x >= screenX+200)  {
                 object_destruction.add(missile)
@@ -272,7 +284,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 enemydestruction.add(enemy)
             }
             else {
-                //enemy.x -= enemy.speed  est remplacé simplament par enemy.move car obj de classe straight enemy ou on a déf move
                 enemy.move()
             }
         }
@@ -293,13 +304,42 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         enemyFollower.move()
 
 
-
-        if (collected.x < -2000){
-            collected.spawn(screenY)
+        for (speedcol in collectable.speedcols){
+            if (speedcol.x < -200){
+                speedcoldestruction.add(speedcol)
+            }
+            else {
+                speedcol.move()
+                speedcol.speedeffect(player, straightenemies, enemyFollower, background1, background2)
+            }
         }
-        collected.move()
+
+        for (objectToDelete in speedcoldestruction) {
+            collectable.speedcols.remove(objectToDelete)
+        }
+        speedcoldestruction.clear()
+
+
+        for (coin in collectable.coins){
+            if (coin.x < -200){
+                coindestruction.add(coin)
+            }
+            else {
+                coin.move()
+            }
+        }
+
+        for (objectToDelete in coindestruction) {
+            collectable.coins.remove(objectToDelete)
+        }
+        coindestruction.clear()
+
+        //if (collected.x < -2000){
+            //collected.spawn(screenY)
+        //}
+        //collected.move()
         //collected.x -= collected.speed
-        collected.speedeffect(player, straightenemies, enemyFollower, background1, background2)
+        //collected.speedeffect(player, straightenemies, enemyFollower, background1, background2)
 
 
     }

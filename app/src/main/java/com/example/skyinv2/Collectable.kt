@@ -5,16 +5,25 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import kotlin.random.Random
 
-class Collectable (res : Resources): GameObject{
+class Collectable (res : Resources, screenY: Int): GameObject{
     var x : Int
     var y : Int
+    val ScreenY : Int
     var speedcol : Bitmap
+    var coin : Bitmap
     private var speed : Int
     private var widthsp : Int
     private var heightsp : Int
+    private var widthcoin : Int
+    private var heightcoin : Int
     private lateinit var speedthread : Thread
     private var Speedeffect : Boolean = false
     private var wich : Int
+    var speedcols : MutableList<Collectable>
+    var coins : MutableList<Collectable>
+    private val resource : Resources
+
+
     init {
         x = 2000
         y = 100
@@ -25,9 +34,19 @@ class Collectable (res : Resources): GameObject{
         heightsp = speedcol.height
         heightsp /= 12
         speedcol = Bitmap.createScaledBitmap(speedcol, widthsp, heightsp, false)
+        coin = BitmapFactory.decodeResource(res, R.drawable.coin)
+        widthcoin = coin.width
+        widthcoin /= 12
+        heightcoin = coin.height
+        heightcoin /= 12
+        coin = Bitmap.createScaledBitmap(coin, widthcoin, heightcoin, false)
+
+
         wich = 0
-
-
+        speedcols= mutableListOf()
+        coins = mutableListOf()
+        ScreenY = screenY
+        resource = res
     }
 
 
@@ -77,15 +96,24 @@ class Collectable (res : Resources): GameObject{
 
 
 
-    private fun spawnObject() {
-        val spawnDelay = (5000..12000).random()
+     fun spawncollectable() {
+        val spawnDelay = (4000..12000).random()
         Thread {
             Thread.sleep(spawnDelay.toLong())
             wich =(1..2).random()
+            if (wich==1){
+                val newspeedcol = Collectable(resource, ScreenY )
+                newspeedcol.spawn(ScreenY)
+                speedcols.add(newspeedcol)
+            }
+            if (wich==2){
+                val newcoin = Collectable(resource, ScreenY )
+                newcoin.spawn(ScreenY)
+                coins.add(newcoin)
+            }
 
 
-
-            spawnObject() // Appel récursif pour continuer à faire apparaître des objets
+            spawncollectable() // Appel récursif pour continuer à faire apparaître des objets
             }.start()
 
     }
