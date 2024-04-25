@@ -33,8 +33,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     private val missile : Missile
     private val numberOfMissiles : Int
     private val missiles : MutableList<Missile>
-    private var missilactif : Boolean = false
-    private var speedCol : Collectable
+    private var collected : Collectable
     private var enemyFollower : FollowerEnemy
     private var straightenemies : MutableList<StraightEnemy>
     private var object_destruction : MutableList<Missile>
@@ -85,7 +84,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         missile = Missile(player.x, player.y, numberOfMissiles , screenY, screenX, resources)
         missiles = mutableListOf()
         //customfont =Typeface.createFromAsset(context.assets, "font/blood_patter.ttf")
-        speedCol = Collectable(resources)
+        collected = Collectable(resources)
         enemyFollower = FollowerEnemy(resources)
 
         straightenemies = mutableListOf()
@@ -168,6 +167,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 player.y.toFloat(),
                 paint
             )
+
             for (missile in missiles) {
                     canvas.drawBitmap(
                         missile.missile,
@@ -176,11 +176,12 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                         paint)
                     }
             canvas.drawBitmap(
-                speedCol.speedcol,
-                speedCol.x.toFloat(),
-                speedCol.y.toFloat(),
+                collected.speedcol,
+                collected.x.toFloat(),
+                collected.y.toFloat(),
                 paint
             )
+
             for (straightEnemy in straightenemies){
                 canvas.drawBitmap(
                     straightEnemy.straightEnemy,
@@ -189,6 +190,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                     paint
                 )
             }
+
             canvas.drawBitmap(
                 enemyFollower.enemyfollower,
                 enemyFollower.x.toFloat(),
@@ -204,7 +206,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
     //La méthode sleep fait dormir le thread pendant 17 millisecondes.
     private fun sleep() {
         try {
-            Thread.sleep(7)
+            Thread.sleep(17)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -224,12 +226,15 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         if (background2.x + background2.background.width < 0) {
             background2.x = screenX
         }
-        if (player.up) {
-            player.moveUp()
-        }
-        if (player.down) {
-            player.moveDown()
-        }
+        player.move()
+
+        //if (player.up) {
+            //player.moveUp()             //toute cette condition a étét envoyé dans le move de player
+        //}
+        //if (player.down) {
+            //player.moveDown()
+        //}
+
         if (player.y <-150){
             player.y = -150
         }
@@ -237,8 +242,13 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             player.y = 750
         }
         for (missile in missiles) {
-            if(missile.x >= 2200)  {
+            if(missile.x >= screenX+200)  {
                 object_destruction.add(missile)
+            }
+            else{
+                if(missile.active){
+                    missile.move()
+                }
             }
         }
         for (objectToDelete in object_destruction) {
@@ -246,11 +256,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
         }
         object_destruction.clear()
 
-        for(missile in missiles){
-            if(missile.active){
-                missile.Moveforward()
-            }
-        }
+
 
 
         if (straightenemies.size < 2) {
@@ -260,15 +266,17 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
             newEnemy.x -= newEnemy.speed
             straightenemies.add(newEnemy)
         }
-        for (enemy in straightenemies){
-            enemy.x -= enemy.speed
-        }
 
         for (enemy in straightenemies){
-            if (enemy.x < -250){
+            if (enemy.x < -200){
                 enemydestruction.add(enemy)
             }
+            else {
+                //enemy.x -= enemy.speed  est remplacé simplament par enemy.move car obj de classe straight enemy ou on a déf move
+                enemy.move()
+            }
         }
+
 
         for (objectToDelete in enemydestruction) {
             straightenemies.remove(objectToDelete)
@@ -278,23 +286,20 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
 
 
 
-
-
-
-
-
         if (enemyFollower.x < -250){
             enemyFollower.spawn(screenY, player.y)
         }
-        enemyFollower.x -= enemyFollower.speed
+        //enemyFollower.x -= enemyFollower.speed
+        enemyFollower.move()
 
 
 
-        if (speedCol.x < -2000){
-            speedCol.spawn(screenY)
+        if (collected.x < -2000){
+            collected.spawn(screenY)
         }
-        speedCol.x -= speedCol.speed
-        speedCol.speedeffect(player, straightenemies, enemyFollower, background1, background2)
+        collected.move()
+        //collected.x -= collected.speed
+        collected.speedeffect(player, straightenemies, enemyFollower, background1, background2)
 
 
     }
@@ -337,7 +342,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int) : Surfac
                 player.up = false
             }
         }
-        //eheugeguyuygyugyuez
         return true
     }
 }

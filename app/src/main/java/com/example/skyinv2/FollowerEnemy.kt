@@ -40,7 +40,7 @@ class FollowerEnemy(res: Resources) : Enemyy(), GameObject {
     }
 
     override fun move() {
-        x -= speed
+        x -= speed + 10
 
     }
 }

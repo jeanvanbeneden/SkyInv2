@@ -31,9 +31,11 @@ class Player (screenY : Int, screenX: Int, res : Resources) : GameObject{
     }
     override fun move() {
         if (up){
-            moveUp()}
+            moveUp()
+        }
         if(down){
-        moveDown()}
+            moveDown()
+        }
     }
 
     fun moveUp(){

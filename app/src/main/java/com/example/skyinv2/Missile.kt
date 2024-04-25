@@ -31,7 +31,7 @@ class Missile (playerx : Int ,playery : Int, nombre : Int, ScreenY : Int, Screen
         Moveforward()
     }
     fun Moveforward() {
-        x += 15
+        x += 23
     }
 
 }

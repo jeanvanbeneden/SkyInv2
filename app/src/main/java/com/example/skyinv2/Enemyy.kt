@@ -12,7 +12,7 @@ open class Enemyy {
     init {
         x = 2000
         y = 100
-        speed = (15..25).random()
+        speed = (17..28).random()
         speedIncrease = 0
     }
 
