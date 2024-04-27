@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
-class Player (screenY : Int, screenX: Int, res : Resources) : GameObject{
+class Player (screenY : Int, screenX: Int, res : Resources) : MouvementObject, CheckCollision{
     val x : Int
     var y : Int
     var player : Bitmap
@@ -12,6 +12,9 @@ class Player (screenY : Int, screenX: Int, res : Resources) : GameObject{
     var height : Int
     var up : Boolean
     var down : Boolean
+    var collect : Collectable
+    var enemstr : StraightEnemy
+    var enemfol : FollowerEnemy
 
     init {
         player = BitmapFactory.decodeResource(res, R.drawable.helico)
@@ -24,11 +27,52 @@ class Player (screenY : Int, screenX: Int, res : Resources) : GameObject{
         player = Bitmap.createScaledBitmap(player, width, height, false)
         up = false
         down = true
+        collect = Collectable(res, screenX, screenY)
+        enemstr = StraightEnemy(res)
+        enemfol = FollowerEnemy(res)
+
     }
 
-    override fun interactions() {
-        TODO("Not yet implemented")
+    override fun interactions(elem: Any): Boolean {
+        if (elem in collect.coins) {
+            val widthc = collect.widthcoin
+            val heightc = collect.heightcoin
+            if (x < collect.x + widthc &&
+                x + width > collect.x &&
+                y < collect.y + heightc &&
+                y + height > collect.y)
+                {
+                return true
+
+            }}
+        if (elem in collect.speedcols) {
+            val widths = collect.widthsp
+            val heights = collect.heightsp
+            if (x < collect.x + widths &&
+                x + width > collect.x &&
+                y < collect.y + heights &&
+                y + height > collect.y) {
+                return true
+                    }
+        }
+        if (elem is StraightEnemy) {
+            val widthest = enemstr.width
+            val heightest = enemstr.height
+            if (x < enemstr.x + widthest &&
+                x + width > enemstr.x &&
+                y < enemstr.y + heightest &&
+                y + height > enemstr.y) {
+                return true
+            }
+        }
+
+        return false
     }
+
+
+
+
+
     override fun move() {
         if (up){
             moveUp()
@@ -39,7 +83,7 @@ class Player (screenY : Int, screenX: Int, res : Resources) : GameObject{
     }
 
     fun moveUp(){
-        y -= 7
+        y -= 8
     }
 
     fun moveDown(){

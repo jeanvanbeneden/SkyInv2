@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
-class StraightEnemy(res: Resources) : Enemyy(), GameObject{
+class StraightEnemy(res: Resources) : Enemyy(), MouvementObject{
 
     var straightEnemy: Bitmap
     val width: Int
@@ -16,10 +16,6 @@ class StraightEnemy(res: Resources) : Enemyy(), GameObject{
         height = straightEnemy.height
         width = straightEnemy.width
         straightEnemy = Bitmap.createScaledBitmap(straightEnemy, width, height, false)
-    }
-
-    override fun interactions() {
-        TODO("Not yet implemented")
     }
 
     override fun move() {

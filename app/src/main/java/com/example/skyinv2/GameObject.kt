@@ -1,6 +1,5 @@
 package com.example.skyinv2
 
-interface GameObject {
-    fun interactions()
+interface MouvementObject {
     fun move()
 }

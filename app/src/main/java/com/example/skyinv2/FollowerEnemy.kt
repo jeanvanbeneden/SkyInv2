@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
-class FollowerEnemy(res: Resources) : Enemyy(), GameObject {
+class FollowerEnemy(res: Resources) : Enemyy(), MouvementObject {
     var enemyfollower: Bitmap
     private var width: Int
     private var height: Int
@@ -35,12 +35,9 @@ class FollowerEnemy(res: Resources) : Enemyy(), GameObject {
 
     }
 
-    override fun interactions() {
-
-    }
 
     override fun move() {
-        x -= speed + 8
+        x -= speed
 
     }
 }

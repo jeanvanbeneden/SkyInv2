@@ -15,7 +15,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 
 @SuppressLint("ViewConstructor")
-class SkyView(context: Context, screenXParam : Int, screenYParam : Int, private val collectable: Collectable) : SurfaceView(context), Runnable {
+class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceView(context), Runnable {
     private var thread: Thread? = null
     private var isPlaying: Boolean
     private var background1: Background
@@ -40,7 +40,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int, private 
     private var enemydestruction : MutableList<StraightEnemy>
     private var speedcoldestruction : MutableList<Collectable>
     private var coindestruction : MutableList<Collectable>
-
+    private var collectable: Collectable
 
 
 
@@ -80,17 +80,17 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int, private 
         buttonX = 100
         buttonY = 50
         score = 0
-        numberOfMissiles = 0
+        numberOfMissiles = 20
         missile = Missile(player.x, player.y, numberOfMissiles , screenY, screenX, resources)
         missiles = mutableListOf()
-        collected = Collectable(resources, screenY)
+        collected = Collectable(resources,screenX, screenY)
         enemyFollower = FollowerEnemy(resources)
         straightenemies = mutableListOf()
         object_destruction = mutableListOf()
         enemydestruction = mutableListOf()
         speedcoldestruction = mutableListOf()
         coindestruction = mutableListOf()
-
+        collectable = Collectable(resources,screenX, screenY)
 
     }
 
@@ -106,8 +106,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int, private 
         isPlaying = true
         thread = Thread(this)
         thread?.start()
-
-        collectable.spawncollectable()
+        collectable.spawncollectable(isPlaying)
 
         scorethread = Thread {
             while (isPlaying) {
@@ -223,7 +222,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int, private 
     //La méthode sleep fait dormir le thread pendant 17 millisecondes.
     private fun sleep() {
         try {
-            Thread.sleep(17)
+            Thread.sleep(7)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -263,6 +262,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int, private 
                 }
             }
         }
+
         for (objectToDelete in object_destruction) {
             missiles.remove(objectToDelete)
         }
@@ -282,6 +282,7 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int, private 
         for (enemy in straightenemies){
             if (enemy.x < -200){
                 enemydestruction.add(enemy)
+
             }
             else {
                 enemy.move()
@@ -308,9 +309,14 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int, private 
             if (speedcol.x < -200){
                 speedcoldestruction.add(speedcol)
             }
+            if(player.interactions(speedcol)){
+                score +=40
+                speedcol.speedeffect(player, straightenemies, enemyFollower, background1, background2)
+
+                speedcoldestruction.add(speedcol)
+            }
             else {
                 speedcol.move()
-                speedcol.speedeffect(player, straightenemies, enemyFollower, background1, background2)
             }
         }
 
@@ -324,6 +330,11 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int, private 
             if (coin.x < -200){
                 coindestruction.add(coin)
             }
+            if (player.interactions(coin)) {
+                collectable.coineffect()
+
+                coindestruction.add(coin)
+            }
             else {
                 coin.move()
             }
@@ -333,15 +344,6 @@ class SkyView(context: Context, screenXParam : Int, screenYParam : Int, private 
             collectable.coins.remove(objectToDelete)
         }
         coindestruction.clear()
-
-        //if (collected.x < -2000){
-            //collected.spawn(screenY)
-        //}
-        //collected.move()
-        //collected.x -= collected.speed
-        //collected.speedeffect(player, straightenemies, enemyFollower, background1, background2)
-
-
     }
 
 
