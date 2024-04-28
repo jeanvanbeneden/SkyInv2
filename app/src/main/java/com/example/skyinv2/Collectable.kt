@@ -57,7 +57,7 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MouvementObject 
         }
     }
 
-    fun speedeffect(player: Player, enemies: MutableList<StraightEnemy>, enemy2 : FollowerEnemy, background1 : Background, background2: Background){
+    fun speedeffect(enemies: MutableList<StraightEnemy>, enemy2 : FollowerEnemy, background1 : Background, background2: Background){
                 Speedeffect = true
                 speedthread = Thread {
                 while (Speedeffect) {

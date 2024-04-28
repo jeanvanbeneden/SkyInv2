@@ -41,6 +41,9 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
     private var speedcoldestruction : MutableList<Collectable>
     private var coindestruction : MutableList<Collectable>
     private var collectable: Collectable
+    //private val typeface : Typeface
+    //private val paintfont : Paint
+
 
 
 
@@ -69,6 +72,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         paint.textSize = 80f
         paint.color = Color.rgb(0, 0, 0 )
         paint.isAntiAlias = true
+
         screenX = screenXParam
         screenY = screenYParam
         player = Player(screenYParam, screenXParam, resources)
@@ -91,6 +95,14 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         speedcoldestruction = mutableListOf()
         coindestruction = mutableListOf()
         collectable = Collectable(resources,screenX, screenY)
+
+        //typeface = Typeface.createFromAsset(context.assets, "app/res/font/blood_patter.ttf")
+        //paintfont = Paint()
+        //paintfont.textSize = 80f
+        //paintfont.color = Color.rgb(0, 0, 0 )
+        //paintfont.isAntiAlias = true
+        //paintfont.typeface = typeface
+
 
     }
 
@@ -311,7 +323,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
             }
             if(player.interactions(speedcol)){
                 score +=40
-                speedcol.speedeffect(player, straightenemies, enemyFollower, background1, background2)
+                speedcol.speedeffect(straightenemies, enemyFollower, background1, background2)
 
                 speedcoldestruction.add(speedcol)
             }

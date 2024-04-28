@@ -4,4 +4,6 @@ interface CheckCollision {
 
 
     fun interactions(elem : Any): Boolean
+
+
 }
