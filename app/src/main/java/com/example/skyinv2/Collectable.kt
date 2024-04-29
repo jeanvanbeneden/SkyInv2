@@ -23,6 +23,7 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MouvementObject 
     var coins : MutableList<Collectable>
     private val resource : Resources
     private var Coineffect : Boolean = false
+    var etat : Boolean = false
     init {
         x = 2000
         y = 100
@@ -87,8 +88,8 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MouvementObject 
 
 
 
-     fun spawncollectable(etat : Boolean) {
-        val spawnDelay = (5000..12000).random()
+     fun collectableFactory() {
+        val spawnDelay = (4000..10000).random()
          Thread {
             Thread.sleep(spawnDelay.toLong())
             wich =(1..2).random()
@@ -104,7 +105,7 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MouvementObject 
             }
 
             if(etat) { //etat ne s'update pas dcp il y a un bug, je pense qu'il faudrait faire genre isPlaying.etat avec etat etant obj de skyview
-                spawncollectable(etat) // Appel récursif pour continuer à faire apparaître des objets
+                collectableFactory() // Appel récursif pour continuer à faire apparaître des objets
             }
             }.start()
 

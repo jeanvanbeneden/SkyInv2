@@ -33,7 +33,6 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
     private val missile : Missile
     private val numberOfMissiles : Int
     private val missiles : MutableList<Missile>
-    private var collected : Collectable
     private var enemyFollower : FollowerEnemy
     private var straightenemies : MutableList<StraightEnemy>
     private var object_destruction : MutableList<Missile>
@@ -87,7 +86,6 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         numberOfMissiles = 20
         missile = Missile(player.x, player.y, numberOfMissiles , screenY, screenX, resources)
         missiles = mutableListOf()
-        collected = Collectable(resources,screenX, screenY)
         enemyFollower = FollowerEnemy(resources)
         straightenemies = mutableListOf()
         object_destruction = mutableListOf()
@@ -116,9 +114,10 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
 
     fun resume() {
         isPlaying = true
+        collectable.etat = true
+        collectable.collectableFactory()
         thread = Thread(this)
         thread?.start()
-        collectable.spawncollectable(isPlaying)
 
         scorethread = Thread {
             while (isPlaying) {
@@ -131,6 +130,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
 
     fun pause() {
         try {
+            collectable.etat = false
             isPlaying = false
             thread?.join()
 
