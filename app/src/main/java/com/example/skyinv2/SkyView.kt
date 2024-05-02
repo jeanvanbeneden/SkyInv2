@@ -32,7 +32,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
     private val buttonY : Int
     private lateinit var scorethread : Thread
     private val missile : Missile
-    private val numberOfMissiles : Int
+    private var numberOfMissiles : Int
     private val missiles : MutableList<Missile>
     private var enemyFollower : FollowerEnemy
     private var straightenemies : MutableList<StraightEnemy>
@@ -98,7 +98,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         while (isPlaying) {
             update()
             draw()
-            sleep()
+            sleep(7)
         }
     }
 
@@ -107,15 +107,17 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         collectable.etat = true
         collectable.collectableFactory()
         thread = Thread(this)
+        sleep(1000)
         thread?.start()
 
         scorethread = Thread {
             while (isPlaying) {
-                Thread.sleep(500) // Une pause de 3 secondes
+                Thread.sleep(500)
                 score++
             }
         }
         scorethread.start()
+
     }
 
     fun pause() {
@@ -155,12 +157,19 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
                 paint
             )
             //paint.typeface = customfont
+            paint.textSize = 80f
             canvas.drawText(
                 "Score: $score ",
                 1700f ,
                 150f,
                 paint
             )
+            paint.textSize =40f
+            canvas.drawText("Missile : $numberOfMissiles", 1700f, 190f, paint)
+
+
+
+
             canvas.drawBitmap(pausebutton, buttonX.toFloat(), buttonY.toFloat(), paint)   //affiche le logo play/pause cliquable
 
             //Le player.x et player.y sont les coordonnées du coin supérieur gauche de l'image du joueur.
@@ -197,12 +206,6 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
                 )
             }
 
-            //canvas.drawBitmap(
-                //collected.speedcol,
-                //collected.x.toFloat(),
-                //collected.y.toFloat(),
-                //paint
-            //)
 
             for (straightEnemy in straightenemies){
                 canvas.drawBitmap(
@@ -225,10 +228,10 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         }
     }
 
-    //La méthode sleep fait dormir le thread pendant 17 millisecondes.
-    private fun sleep() {
+    //La méthode sleep fait dormir le thread pendant 7 millisecondes.
+    private fun sleep(t : Int) {
         try {
-            Thread.sleep(7)
+            Thread.sleep(t.toLong())
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -371,13 +374,22 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
                 }
 
                 if(touchX>=1000){
-                    //missilactif = true // Active le missile
-                    missile.x = player.x + 40
-                    missile.y = player.y + player.player.height / 2 + missile.missile.height / 2 - 20
-                    val newMissile= Missile(missile.x,missile.y,numberOfMissiles, screenX , screenY, resources )
-                    missiles.add(newMissile)
-                    newMissile.active = true
-                    score -=4
+                    if (numberOfMissiles > 0) {
+                        numberOfMissiles -= 1
+                        missile.x = player.x + 40
+                        missile.y =
+                            player.y + player.player.height / 2 + missile.missile.height / 2 - 20
+                        val newMissile = Missile(
+                            missile.x,
+                            missile.y,
+                            numberOfMissiles,
+                            screenX,
+                            screenY,
+                            resources
+                        )
+                        missiles.add(newMissile)
+                        newMissile.active = true
+                    }
                     }
                 else {
                     // Gestion du mouvement du joueur

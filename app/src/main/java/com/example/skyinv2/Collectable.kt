@@ -50,12 +50,12 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MouvementObject 
     }
 
 
-    fun spawn (screenY : Int){
-        x = 2000
+    fun spawn (screenY : Int, screenX: Int){
+        x = screenX
         y = (0..screenY-75).random()
-        if (x<-2000){
-            x=2000
-        }
+        //if (x<-2000){
+            //x=2000
+        //}
     }
 
     fun speedeffect(enemies: MutableList<StraightEnemy>, enemy2 : FollowerEnemy, background1 : Background, background2: Background){
@@ -95,12 +95,12 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MouvementObject 
             wich =(1..2).random()
             if (wich==1){
                 val newspeedcol = Collectable(resource,ScreenX, ScreenY )
-                newspeedcol.spawn(ScreenY)
+                newspeedcol.spawn(ScreenY, ScreenX)
                 speedcols.add(newspeedcol)
             }
             if (wich==2){
                 val newcoin = Collectable(resource,ScreenX, ScreenY )
-                newcoin.spawn(ScreenY)
+                newcoin.spawn(ScreenY, ScreenX )
                 coins.add(newcoin)
             }
 
