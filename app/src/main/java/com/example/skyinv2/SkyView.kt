@@ -13,6 +13,7 @@ import android.graphics.Typeface
 import android.view.Gravity
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 @SuppressLint("ViewConstructor")
 class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceView(context), Runnable {
@@ -42,17 +43,6 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
     private var collectable: Collectable
     //private val typeface : Typeface
     //private val paintfont : Paint
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -139,6 +129,10 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         }
     }
 
+    private fun showPausePopup() {
+        val pausePopup = PausePopup(context, screenX, screenY)
+        pausePopup.show()
+    }
 
     //La méthode draw dessine les deux images de fond sur le canvas.
     //Le canvas est un objet qui représente la surface de dessin de la vue.
@@ -369,6 +363,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
                 if (touchX >= buttonX && touchX <= buttonX + pausebutton.width && touchY >= buttonY && touchY <= buttonY + pausebutton.height) {
                     if (isPlaying) {
                         pause()  // Met le jeu en pause
+                        showPausePopup()
                     } else {
                         resume() // Reprend le jeu
                     }

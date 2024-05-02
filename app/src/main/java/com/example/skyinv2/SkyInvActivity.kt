@@ -20,6 +20,7 @@ class SkyInvActivity : AppCompatActivity() {
 
             val screenHeight = resources.displayMetrics.heightPixels
             val screenWidth = resources.displayMetrics.widthPixels
+
             skyView = SkyView(this, screenWidth, screenHeight)
 
 
