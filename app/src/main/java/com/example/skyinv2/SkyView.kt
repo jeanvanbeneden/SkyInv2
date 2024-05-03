@@ -262,6 +262,16 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         }
 
         for (missile in missiles) {
+            for (enemy in straightenemies){
+                if (missile.interactions(enemy)){
+                    object_destruction.add(missile)
+                    enemydestruction.add(enemy)
+                }
+            }
+            if (missile.interactions(enemyFollower)){
+                object_destruction.add(missile)
+                //il faut créer une liste d'éléments de enemy follower
+            }
             if(missile.x >= screenX+200)  {
                 object_destruction.add(missile)
             }

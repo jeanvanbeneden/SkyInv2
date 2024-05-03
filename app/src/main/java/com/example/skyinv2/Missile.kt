@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
-class Missile (playerx : Int ,playery : Int, nombre : Int, ScreenY : Int, ScreenX : Int, res : Resources) : MouvementObject , CheckCollision {
+class Missile (playerx : Int ,playery : Int, nombredemissienstock : Int, ScreenY : Int, ScreenX : Int, res : Resources) : MouvementObject , CheckCollision {
     var missile: Bitmap
     var y: Int
     var x: Int
@@ -25,7 +25,7 @@ class Missile (playerx : Int ,playery : Int, nombre : Int, ScreenY : Int, Screen
     }
 
     override fun interactions(elem: Any): Boolean {
-        TODO("Not yet implemented")
+        return false
     }
     override fun move(){
         Moveforward()
