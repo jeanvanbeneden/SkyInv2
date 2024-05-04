@@ -6,7 +6,7 @@ class Score () {
     var isPlaying : Boolean = true
     private lateinit var scoremultiplicator :Thread
     private var multiplicator : Boolean = false
-
+    private lateinit var scoremultthread : Thread
     init {
         score =0
     }
@@ -33,12 +33,19 @@ class Score () {
     fun doublescore(){
         multiplicator = true
         scoremultiplicator = Thread{
-            Thread.sleep(20000)
+            Thread.sleep((5000..9000).random().toLong())
             multiplicator = false
 
         }
-        while(multiplicator){
-            score++
+
+        scoremultthread = Thread {
+            while(multiplicator){
+                score++
+                Thread.sleep(500)
+            }
         }
+        scoremultiplicator.start()
+        scoremultthread.start()
     }
 }
+
