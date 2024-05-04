@@ -9,4 +9,7 @@
 
     <!-- Description imageview-->
     <string name="descr_back">Background</string>
+    <string name="paused">Paused</string>
+    <string name="continu">Continue</string>
+    <string name="menu">Menu</string>
 </resources>

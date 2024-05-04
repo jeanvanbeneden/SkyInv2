@@ -1,33 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center_vertical|center_horizontal"
     android:padding="16dp">
 
     <TextView
         android:id="@+id/pause_popup_title"
+        style="@style/Polytech"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Paused"
-        style="@style/Polytech"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="40dp"
+        android:text="@string/paused"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="48sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/resume_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Continue"
         style="@style/Polytech"
-        android:layout_marginBottom="8dp"/>
+        android:layout_width="235dp"
+        android:layout_height="59dp"
+        android:layout_marginBottom="20dp"
+        android:background="@android:color/transparent"
+        android:text="@string/continu"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/menu_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         style="@style/Polytech"
-        android:text="Menu"/>
+        android:layout_width="233dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="@string/menu"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="25sp" />
 </LinearLayout>
