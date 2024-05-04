@@ -14,6 +14,7 @@ import android.view.Gravity
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import java.lang.Math.random
 
 @SuppressLint("ViewConstructor")
 class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceView(context), Runnable {
@@ -24,28 +25,24 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
     private val screenX: Int
     private val screenY: Int
     private val player: Player
-    private var score : Int
     private var etat : String
     private val paint: Paint
     private var pausebutton : Bitmap
     private val buttonX : Int
     private val buttonY : Int
-    private lateinit var scorethread : Thread
     private val missile : Missile
     private var numberOfMissiles : Int
     private val missiles : MutableList<Missile>
     private var enemyFollower : FollowerEnemy
     private var straightenemies : MutableList<StraightEnemy>
-    private var object_destruction : MutableList<Missile>
+    private var missiledestruction : MutableList<Missile>
     private var enemydestruction : MutableList<StraightEnemy>
     private var speedcoldestruction : MutableList<Collectable>
     private var coindestruction : MutableList<Collectable>
     private var collectable: Collectable
+    private var score2 :Score
     //private val typeface : Typeface
     //private val paintfont : Paint
-
-
-
 
 
 
@@ -72,18 +69,17 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         etat = "Pause"
         buttonX = 100
         buttonY = 50
-        score = 0
         numberOfMissiles = 20
         missile = Missile(player.x, player.y, numberOfMissiles , screenY, screenX, resources)
         missiles = mutableListOf()
         enemyFollower = FollowerEnemy(resources)
         straightenemies = mutableListOf()
-        object_destruction = mutableListOf()
+        missiledestruction = mutableListOf()
         enemydestruction = mutableListOf()
         speedcoldestruction = mutableListOf()
         coindestruction = mutableListOf()
         collectable = Collectable(resources,screenX, screenY)
-
+        score2 = Score()
         //typeface = Typeface.createFromAsset(context.assets, "app/res/font/blood_patter.ttf")
         //paintfont = Paint()
         //paintfont.textSize = 80f
@@ -105,18 +101,12 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
     fun resume() {
         isPlaying = true
         collectable.etat = true
+        score2.isPlaying = true
         collectable.collectableFactory()
         thread = Thread(this)
         sleep(1000)
         thread?.start()
-
-        scorethread = Thread {
-            while (isPlaying) {
-                Thread.sleep(500)
-                score++
-            }
-        }
-        scorethread.start()
+        score2.scorecount()
 
     }
 
@@ -124,6 +114,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         try {
             collectable.etat = false
             isPlaying = false
+            score2.isPlaying = false
             thread?.join()
 
         } catch (e: InterruptedException) {
@@ -159,7 +150,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
             //paint.typeface = customfont
             paint.textSize = 80f
             canvas.drawText(
-                "Score: $score ",
+                "Score: ${score2.score} ",
                 1700f ,
                 150f,
                 paint
@@ -264,16 +255,17 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         for (missile in missiles) {
             for (enemy in straightenemies){
                 if (missile.interactions(enemy)){
-                    object_destruction.add(missile)
+                    missiledestruction.add(missile)
                     enemydestruction.add(enemy)
                 }
             }
             if (missile.interactions(enemyFollower)){
-                object_destruction.add(missile)
+
+                missiledestruction.add(missile)
                 //il faut créer une liste d'éléments de enemy follower
             }
             if(missile.x >= screenX+200)  {
-                object_destruction.add(missile)
+                missiledestruction.add(missile)
             }
             else{
                 if(missile.active){
@@ -282,10 +274,10 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
             }
         }
 
-        for (objectToDelete in object_destruction) {
+        for (objectToDelete in missiledestruction) {
             missiles.remove(objectToDelete)
         }
-        object_destruction.clear()
+        missiledestruction.clear()
 
 
 
@@ -326,12 +318,11 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
 
         for (speedcol in collectable.speedcols){
             if (speedcol.x < -200){
+
                 speedcoldestruction.add(speedcol)
             }
             if(player.interactions(speedcol)){
-                score +=40
                 speedcol.speedeffect(straightenemies, enemyFollower, background1, background2)
-
                 speedcoldestruction.add(speedcol)
             }
             else {
@@ -351,7 +342,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
             }
             if (player.interactions(coin)) {
                 collectable.coineffect()
-
+                score2.scorebonus((50..200).random())
                 coindestruction.add(coin)
             }
             else {
@@ -364,7 +355,6 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         }
         coindestruction.clear()
     }
-
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {

@@ -34,35 +34,37 @@ class Player (screenY : Int, screenX: Int, res : Resources) : MouvementObject, C
     }
 
     override fun interactions(elem: Any): Boolean {
-        if (elem in collect.coins) {
-            val widthc = collect.widthcoin
-            val heightc = collect.heightcoin
-            if (x < collect.x + widthc &&
-                x + width > collect.x &&
-                y < collect.y + heightc &&
-                y + height > collect.y)
-                {
-                return true
 
-            }}
-        if (elem in collect.speedcols) {
-            val widths = collect.widthsp
-            val heights = collect.heightsp
-            if (x < collect.x + widths &&
-                x + width > collect.x &&
-                y < collect.y + heights &&
-                y + height > collect.y) {
-                return true
-                    }
-        }
-        if (elem is StraightEnemy) {
-            val widthest = enemstr.width
-            val heightest = enemstr.height
-            if (x < enemstr.x + widthest &&
-                x + width > enemstr.x &&
-                y < enemstr.y + heightest &&
-                y + height > enemstr.y) {
-                return true
+        when (elem) {
+            in collect.coins -> {
+                val widthc = collect.widthcoin
+                val heightc = collect.heightcoin
+                if (x <= collect.x + widthc &&
+                    x + width >= collect.x &&
+                    y < collect.y + heightc &&
+                    y + height > collect.y) {
+                    return true
+
+                }}
+            in collect.speedcols -> {
+                val widths = collect.widthsp
+                val heights = collect.heightsp
+                if (x < collect.x + widths &&
+                    x + width > collect.x &&
+                    y < collect.y + heights &&
+                    y + height > collect.y) {
+                    return true
+                }
+            }
+            is StraightEnemy -> {
+                val widthest = enemstr.width
+                val heightest = enemstr.height
+                if (x < enemstr.x + widthest &&
+                    x + width > enemstr.x &&
+                    y < enemstr.y + heightest &&
+                    y + height > enemstr.y) {
+                    return true
+                }
             }
         }
 

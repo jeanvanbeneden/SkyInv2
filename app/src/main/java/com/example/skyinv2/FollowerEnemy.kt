@@ -6,8 +6,8 @@ import android.graphics.BitmapFactory
 
 class FollowerEnemy(res: Resources) : Enemyy(), MouvementObject {
     var enemyfollower: Bitmap
-    private var width: Int
-    private var height: Int
+    var width: Int
+    var height: Int
 
 
     init {
