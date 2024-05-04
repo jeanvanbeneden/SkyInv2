@@ -5,15 +5,13 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
 class Background (screenX: Int, screenY: Int, res: Resources){
-    var x : Int
-    var y : Int
+    var x : Int =0
+    var y : Int =0
     var background : Bitmap
     var speed : Int
 
 
     init {
-        x = 0
-        y = 0
         background = BitmapFactory.decodeResource(res, R.drawable.backgroundwar)
         background = Bitmap.createScaledBitmap(background, screenX, screenY, false)
         speed = 10

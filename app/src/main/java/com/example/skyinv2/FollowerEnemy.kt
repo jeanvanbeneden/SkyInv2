@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
-class FollowerEnemy(res: Resources) : Enemyy(), MouvementObject {
+class FollowerEnemy(res: Resources) : Enemyy(), MovementObject {
     var enemyfollower: Bitmap
     var width: Int
     var height: Int

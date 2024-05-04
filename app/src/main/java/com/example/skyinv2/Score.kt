@@ -1,18 +1,12 @@
 package com.example.skyinv2
 
-class Score () {
-    var score : Int
+class Score {
+    var score : Int = 0
     private lateinit var scorethread : Thread
     var isPlaying : Boolean = true
     private lateinit var scoremultiplicator :Thread
     private var multiplicator : Boolean = false
     private lateinit var scoremultthread : Thread
-    init {
-        score =0
-    }
-
-
-
 
 
     fun scorecount(){

@@ -1,5 +1,7 @@
 package com.example.skyinv2
 
+import kotlin.math.abs
+
 
 open class Enemyy {
 
@@ -31,7 +33,7 @@ open class Enemyy {
         var newY: Int
 
         do { newY = (0..screenHeight - 150).random()
-        } while (enemies.any { enemy -> Math.abs(enemy.y - newY) < height })
+        } while (enemies.any { enemy -> abs(enemy.y - newY) < height })
 
     }
 }

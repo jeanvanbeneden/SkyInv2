@@ -1,9 +1,8 @@
 package com.example.skyinv2
 
 
-import android.content.Context
+
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager

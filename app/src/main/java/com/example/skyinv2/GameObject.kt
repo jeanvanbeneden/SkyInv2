@@ -1,5 +1,5 @@
 package com.example.skyinv2
 
-interface MouvementObject {
+interface MovementObject {
     fun move()
 }

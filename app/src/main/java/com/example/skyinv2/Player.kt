@@ -4,17 +4,17 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
-class Player (screenY : Int, screenX: Int, res : Resources) : MouvementObject, CheckCollision{
+class Player (screenY : Int, screenX: Int, res : Resources) : MovementObject, CheckCollision{
     val x : Int
     var y : Int
     var player : Bitmap
-    var width : Int
-    var height : Int
+    private var width : Int
+    private var height : Int
     var up : Boolean
     var down : Boolean
-    var collect : Collectable
-    var enemstr : StraightEnemy
-    var enemfol : FollowerEnemy
+    private var collect : Collectable
+    private var enemstr : StraightEnemy
+    private var enemfol : FollowerEnemy
 
     init {
         player = BitmapFactory.decodeResource(res, R.drawable.helico)
@@ -84,11 +84,11 @@ class Player (screenY : Int, screenX: Int, res : Resources) : MouvementObject, C
         }
     }
 
-    fun moveUp(){
+    private fun moveUp(){
         y -= 8
     }
 
-    fun moveDown(){
+    private fun moveDown(){
         y += 7
     }
 
