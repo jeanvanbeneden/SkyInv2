@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 
 class StraightEnemy(res: Resources) : Enemyy(), MovementObject{
 
+
     var straightEnemy: Bitmap
     val width: Int
     val height: Int

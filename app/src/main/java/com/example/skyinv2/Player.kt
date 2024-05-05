@@ -35,18 +35,18 @@ class Player (screenY : Int, screenX: Int, res : Resources) : MovementObject, Ch
 
     override fun interactions(elem: Any): Boolean {
 
-        when (elem) {
-            in collect.coins -> {
-                val widthc = collect.widthcoin
-                val heightc = collect.heightcoin
-                if (x <= collect.x + widthc &&
-                    x + width >= collect.x &&
-                    y < collect.y + heightc &&
-                    y + height > collect.y) {
+        if (elem in collect.coins) {
+            // Iterez sur chaque pièce dans la liste collect.coins
+            for (coin in collect.coins) {
+                if (x <= coin.x + coin.widthcoin &&
+                    x + width >= coin.x &&
+                    y <= coin.y + coin.heightcoin &&
+                    y + height > coin.y) {
                     return true
-
-                }}
-            in collect.speedcols -> {
+                }
+            }
+        }
+            if (elem in collect.speedcols) {
                 val widths = collect.widthsp
                 val heights = collect.heightsp
                 if (x < collect.x + widths &&
@@ -56,7 +56,7 @@ class Player (screenY : Int, screenX: Int, res : Resources) : MovementObject, Ch
                     return true
                 }
             }
-            is StraightEnemy -> {
+            if (elem == enemstr) {
                 val widthest = enemstr.width
                 val heightest = enemstr.height
                 if (x < enemstr.x + widthest &&
@@ -66,7 +66,6 @@ class Player (screenY : Int, screenX: Int, res : Resources) : MovementObject, Ch
                     return true
                 }
             }
-        }
 
         return false
     }

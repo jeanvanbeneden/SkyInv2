@@ -9,7 +9,6 @@ import android.widget.Button
 
 class PausePopup(private val context: Context, private val screenWidth: Int, private val screenHeight: Int) :
     Dialog(context) {
-
     init {
         setContentView(R.layout.pause_popup_layout)
         val width = (screenWidth * 0.8).toInt()
@@ -19,21 +18,14 @@ class PausePopup(private val context: Context, private val screenWidth: Int, pri
         val resumeButton = findViewById<Button>(R.id.resume_button)
         val menuButton = findViewById<Button>(R.id.menu_button)
 
-
         resumeButton.setOnClickListener {
 
             dismiss()
         }
-
         menuButton.setOnClickListener {
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
             dismiss() // Ferme le Popup après avoir appuyé sur "Menu"
         }
     }
-
-
-
-
-
 }

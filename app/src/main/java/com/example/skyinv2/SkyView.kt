@@ -365,7 +365,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
 
 
         for (coin in collectable.coins){
-            if (coin.x < -200){
+            if (coin.x < 0){
                 collectabledesctruction.add(coin)
             }
             if (player.interactions(coin)) {
@@ -419,6 +419,14 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
                 // Vérifie si le toucher est dans les coordonnées du bouton de pause
                 if (touchX >= buttonX && touchX <= buttonX + pausebutton.width && touchY >= buttonY && touchY <= buttonY + pausebutton.height) {
                     if (isPlaying) {
+                        val sharedPrefs = context.getSharedPreferences("GamePrefs", Context.MODE_PRIVATE)
+                        val highScore = sharedPrefs.getInt("HighScore", 0)
+                        if (score2.score > highScore){
+                            val editor = sharedPrefs.edit()
+                            editor.putInt("HighScore", score2.score)
+                            editor.apply()
+                        }
+
                         pause()  // Met le jeu en pause
                         showPausePopup()
                     } else {

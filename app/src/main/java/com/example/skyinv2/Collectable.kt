@@ -35,6 +35,8 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MovementObject {
     var widthmissileadd : Int
     var heightmissileadd : Int
     var missileadds : MutableList<Collectable>
+    //ennemies
+
 
 
 
@@ -151,4 +153,8 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MovementObject {
     }
 
 }
+
+
+
+
 
