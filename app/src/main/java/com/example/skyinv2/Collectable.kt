@@ -119,6 +119,7 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MovementObject {
 
 
 
+
      fun collectableFactory() {
         val spawnDelay = (4000..10000).random()
          Thread {

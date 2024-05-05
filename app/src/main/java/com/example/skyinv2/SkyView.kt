@@ -33,6 +33,8 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
     private var collectabledesctruction : MutableList<Collectable>
     private var collectable: Collectable
     private var score2 :Score
+    private var t : Int
+    private var tIncrementThread : Thread
     //private val typeface : Typeface
     //private val paintfont : Paint
 
@@ -50,7 +52,6 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         paint.textSize = 80f
         paint.color = Color.rgb(0, 0, 0 )
         paint.isAntiAlias = true
-
         screenX = screenXParam
         screenY = screenYParam
         player = Player(screenYParam, screenXParam, resources)
@@ -73,6 +74,14 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
 
         collectable = Collectable(resources,screenX, screenY)
         score2 = Score()
+
+        t=2
+        tIncrementThread = Thread {
+            while (isPlaying) {
+                Thread.sleep(15000)
+                t += 1
+            }
+        }
         //typeface = Typeface.createFromAsset(context.assets, "app/res/font/blood_patter.ttf")
         //paintfont = Paint()
         //paintfont.textSize = 80f
@@ -100,6 +109,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         sleep(1000)
         thread?.start()
         score2.scorecount()
+        tIncrementThread.start()
 
     }
 
@@ -291,7 +301,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
 
 
 
-        if (straightenemies.size < 2) {
+        if (straightenemies.size < t) {
             val newEnemy = StraightEnemy(resources)
             newEnemy.spawn(screenY, player.y)
             newEnemy.spawn2(screenY, player.y, straightenemies, newEnemy.height)

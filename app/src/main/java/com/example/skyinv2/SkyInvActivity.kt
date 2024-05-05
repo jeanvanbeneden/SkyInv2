@@ -33,6 +33,8 @@ class SkyInvActivity : AppCompatActivity() {
         updateHighScore(highScore)
     }
 
+
+
     fun saveHighScore(highScore: Int) {
         val sharedPrefs = getSharedPreferences("GamePrefs", Context.MODE_PRIVATE)
         with(sharedPrefs.edit()) {

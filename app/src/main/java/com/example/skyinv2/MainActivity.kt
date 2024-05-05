@@ -10,7 +10,7 @@ import android.content.Context
 
 class MainActivity : AppCompatActivity() {
     private lateinit var play: Button
-    private lateinit var highScoreTextView: TextView // Ajoutez cette ligne
+    private lateinit var highScoreTextView: TextView 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
