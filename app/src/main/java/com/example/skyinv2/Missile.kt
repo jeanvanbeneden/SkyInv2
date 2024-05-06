@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
-class Missile(playerx: Int, playery: Int, ScreenY: Int, ScreenX: Int, res: Resources) : MovementObject , CheckCollision {
+class Missile(playerx: Int, playery: Int, ScreenY: Int, ScreenX: Int, res: Resources) : MovementObject  {
     var missile: Bitmap
     var y: Int
     var x: Int
@@ -26,7 +26,7 @@ class Missile(playerx: Int, playery: Int, ScreenY: Int, ScreenX: Int, res: Resou
 
     }
 
-    override fun interactions(elem: Any): Boolean {
+    /*override fun interactions(elem: Any): Boolean {
         if(elem is FollowerEnemy) {
             val widthef: Int = ennemifol.width
             val heightef : Int = ennemifol.height
@@ -37,7 +37,8 @@ class Missile(playerx: Int, playery: Int, ScreenY: Int, ScreenX: Int, res: Resou
         }
 
         return false
-    }
+    }*/
+
     override fun move(){
         moveforward()
     }

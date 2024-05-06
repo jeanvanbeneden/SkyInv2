@@ -33,48 +33,37 @@ class Player (screenY : Int, screenX: Int, res : Resources) : MovementObject, Ch
 
     }
 
-    override fun interactions(elem: Any): Boolean {
 
-        if (elem in collect.coins) {
-            // Iterez sur chaque pièce dans la liste collect.coins
-            for (coin in collect.coins) {
-                if (x <= coin.x + coin.widthcoin &&
-                    x + width >= coin.x &&
-                    y <= coin.y + coin.heightcoin &&
-                    y + height > coin.y) {
-                    return true
-                }
-            }
-        }
-            if (elem in collect.speedcols) {
-                val widths = collect.widthsp
-                val heights = collect.heightsp
-                if (x < collect.x + widths &&
-                    x + width > collect.x &&
-                    y < collect.y + heights &&
-                    y + height > collect.y) {
-                    return true
-                }
-            }
-            if (elem == enemstr) {
-                val widthest = enemstr.width
-                val heightest = enemstr.height
-                if (x < enemstr.x + widthest &&
-                    x + width > enemstr.x &&
-                    y < enemstr.y + heightest &&
-                    y + height > enemstr.y) {
-                    return true
-                }
-            }
+    override fun interaction1(player: Player, coin: Collectable): Boolean {
+        return player.x < coin.x + coin.widthcoin - 100 &&
+                player.x + player.width > coin .x &&
+                player.y < coin.y + coin.heightcoin - 150 &&
+                player.y + player.height -150 > coin.y
+    }
 
-        return false
+    override fun interaction2(player: Player, speedcoil: Collectable): Boolean {
+        return player.x < speedcoil.x + speedcoil.widthsp -100 &&
+                player.x + player.width > speedcoil.x &&
+                player.y < speedcoil.y + speedcoil.heightsp -150 &&
+                player.y + player.height -150 > speedcoil.y
+    }
+
+    override fun interaction3(player: Player, coinmult: Collectable): Boolean {
+        return player.x < coinmult.x + coinmult.widthcoinmult -100 &&
+                player.y < coinmult.y + coinmult.heightcoinmult -250 &&
+                player.x + player.width > coinmult.x &&
+                player.y + player.height -150 > coinmult.y
+    }
+    override fun interaction4(player: Player, missileadd: Collectable): Boolean {
+        return player.x < missileadd.x + missileadd.widthmissileadd -100 &&
+                player.y < missileadd.y + missileadd.heightmissileadd &&
+                player.x + player.width > missileadd.x &&
+                player.y + player.height -150 > missileadd.y
     }
 
 
 
-
-
-    override fun move() {
+    override fun move() {x
         if (up){
             moveUp()
         }

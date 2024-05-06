@@ -272,7 +272,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
             player.y = 750
         }
 
-        for (missile in missiles) {
+        /*for (missile in missiles) {
             for (enemy in straightenemies) {
                 if (missile.interactions(enemy)) {
                     missiledestruction.add(missile)
@@ -291,7 +291,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
                     missile.move()
                 }
             }
-        }
+        } */
 
         for (objectToDelete in missiledestruction) {
             missiles.remove(objectToDelete)
@@ -338,7 +338,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
             if (coinmult.x <= -200) {
                 collectabledesctruction.add(coinmult)
             }
-            if (player.interactions(coinmult)) {
+            if (player.interaction3(player, coinmult)) {
                 score2.doublescore()
                 collectabledesctruction.add(coinmult)
             } else {
@@ -359,7 +359,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
 
                 collectabledesctruction.add(speedcol)
             }
-            if(player.interactions(speedcol)){
+            if(player.interaction2(player,speedcol)){
                 speedcol.speedeffect(straightenemies, enemyFollower, background1, background2)
                 collectabledesctruction.add(speedcol)
             }
@@ -378,7 +378,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
             if (coin.x < 0){
                 collectabledesctruction.add(coin)
             }
-            if (player.interactions(coin)) {
+            if (player.interaction1(player , coin)) {
                 score2.scorebonus((50..200).random())
                 collectabledesctruction.add(coin)
             }
@@ -387,17 +387,16 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
             }
         }
 
-        for (objectToDelete in collectabledesctruction) {
+         for (objectToDelete in collectabledesctruction) {
             collectable.coins.remove(objectToDelete)
         }
         collectabledesctruction.clear()
-
 
         for (missileadd in collectable.missileadds){
             if (missileadd.x < -200){
                 collectabledesctruction.add(missileadd)
             }
-            if (player.interactions(missileadd)) {
+            if (player.interaction4(player, missileadd)) {
                 numberOfMissiles += 10
                 collectabledesctruction.add(missileadd)
             }
@@ -477,11 +476,3 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         return true
     }
 }
-
-
-
-
-
-
-
-

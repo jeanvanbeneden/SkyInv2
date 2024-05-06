@@ -43,7 +43,7 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MovementObject {
     init {
         x = 2000
         y = 100
-        speed = 15
+        speed = 8
 
         speedcol = BitmapFactory.decodeResource(res, R.drawable.speedcolok)
         widthsp = speedcol.width
@@ -121,7 +121,7 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MovementObject {
 
 
      fun collectableFactory() {
-        val spawnDelay = (4000..10000).random()
+        val spawnDelay = (1000..5000).random()
          Thread {
             Thread.sleep(spawnDelay.toLong())
             wich =(1..4).random()
