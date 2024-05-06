@@ -105,7 +105,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         thread?.start()
         score2.scorecount()
         tIncrementThread = Thread {
-            while (isPlaying) {
+            while (isPlaying && t<=10) {
                 Thread.sleep(15000)
                 t += 1
             }
@@ -292,12 +292,13 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
                     missile.move()
                 }
             }
-        } */
+        }
 
         for (objectToDelete in missiledestruction) {
             missiles.remove(objectToDelete)
         }
         missiledestruction.clear()
+        */
 
 
 

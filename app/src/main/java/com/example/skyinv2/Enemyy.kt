@@ -8,7 +8,7 @@ open class Enemyy {
 
     var x: Int
     var y: Int
-    protected var speedIncrease: Int
+    var speedIncrease: Int
     var speed: Int
 
     init {
@@ -16,6 +16,7 @@ open class Enemyy {
         y = 100
         speed = (17..28).random()
         speedIncrease = 0
+
     }
 
 

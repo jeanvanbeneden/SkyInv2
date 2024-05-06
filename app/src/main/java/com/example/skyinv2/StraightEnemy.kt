@@ -17,6 +17,7 @@ class StraightEnemy(res: Resources) : Enemyy(), MovementObject{
         height = straightEnemy.height
         width = straightEnemy.width
         straightEnemy = Bitmap.createScaledBitmap(straightEnemy, width, height, false)
+
     }
 
     override fun move() {
