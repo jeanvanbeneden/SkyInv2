@@ -15,7 +15,8 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
     private var isPlaying: Boolean
     private var background1: Background
     private var background2: Background
-    private val screenX: Int
+    private val
+            screenX: Int
     private val screenY: Int
     private val player: Player
     private var etat : String

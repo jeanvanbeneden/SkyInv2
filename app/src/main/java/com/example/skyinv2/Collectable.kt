@@ -43,7 +43,7 @@ class Collectable (res : Resources,screenX: Int, screenY: Int): MovementObject {
     init {
         x = 2000
         y = 100
-        speed = 8
+        speed = 15
 
         speedcol = BitmapFactory.decodeResource(res, R.drawable.speedcolok)
         widthsp = speedcol.width

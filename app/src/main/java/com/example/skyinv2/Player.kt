@@ -36,7 +36,7 @@ class Player (screenY : Int, screenX: Int, res : Resources) : MovementObject, Ch
 
     override fun interaction1(player: Player, coin: Collectable): Boolean {
         return player.x < coin.x + coin.widthcoin - 100 &&
-                player.x + player.width > coin .x &&
+                player.x + player.width - 100 > coin .x &&
                 player.y < coin.y + coin.heightcoin - 150 &&
                 player.y + player.height -150 > coin.y
     }
@@ -50,14 +50,14 @@ class Player (screenY : Int, screenX: Int, res : Resources) : MovementObject, Ch
 
     override fun interaction3(player: Player, coinmult: Collectable): Boolean {
         return player.x < coinmult.x + coinmult.widthcoinmult -100 &&
-                player.y < coinmult.y + coinmult.heightcoinmult -250 &&
+                player.y < coinmult.y + coinmult.heightcoinmult -150 &&
                 player.x + player.width > coinmult.x &&
                 player.y + player.height -150 > coinmult.y
     }
     override fun interaction4(player: Player, missileadd: Collectable): Boolean {
         return player.x < missileadd.x + missileadd.widthmissileadd -100 &&
-                player.y < missileadd.y + missileadd.heightmissileadd &&
-                player.x + player.width > missileadd.x &&
+                player.y < missileadd.y + missileadd.heightmissileadd -180 &&
+                player.x + player.width  > missileadd.x &&
                 player.y + player.height -150 > missileadd.y
     }
 
