@@ -34,7 +34,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
     private var collectable: Collectable
     private var score2 :Score
     private var t : Int
-    private var tIncrementThread : Thread
+    private lateinit var tIncrementThread : Thread
     //private val typeface : Typeface
     //private val paintfont : Paint
 
@@ -76,12 +76,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         score2 = Score()
 
         t=2
-        tIncrementThread = Thread {
-            while (isPlaying) {
-                Thread.sleep(15000)
-                t += 1
-            }
-        }
+
         //typeface = Typeface.createFromAsset(context.assets, "app/res/font/blood_patter.ttf")
         //paintfont = Paint()
         //paintfont.textSize = 80f
@@ -109,6 +104,12 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         sleep(1000)
         thread?.start()
         score2.scorecount()
+        tIncrementThread = Thread {
+            while (isPlaying) {
+                Thread.sleep(15000)
+                t += 1
+            }
+        }
         tIncrementThread.start()
 
     }
