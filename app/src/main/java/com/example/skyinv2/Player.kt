@@ -61,8 +61,6 @@ class Player (screenY : Int, screenX: Int, res : Resources) : MovementObject, Ch
                 player.y + player.height -150 > missileadd.y
     }
 
-
-
     override fun move() {x
         if (up){
             moveUp()
@@ -78,6 +76,17 @@ class Player (screenY : Int, screenX: Int, res : Resources) : MovementObject, Ch
 
     private fun moveDown(){
         y += 7
+    }
+    companion object{
+        private var INSTANCE: Player? = null
+
+        fun getInstance(screenY: Int, screenX: Int, res : Resources): Player{
+            if (INSTANCE == null){
+                INSTANCE = Player(screenY, screenX, res)
+            }
+            return INSTANCE!!
+
+        }
     }
 
 

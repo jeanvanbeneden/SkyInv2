@@ -54,7 +54,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         paint.isAntiAlias = true
         screenX = screenXParam
         screenY = screenYParam
-        player = Player(screenYParam, screenXParam, resources)
+        player = Player.getInstance(screenYParam, screenXParam, resources)
         pausebutton = BitmapFactory.decodeResource(resources, R.drawable.pausebutton)
         val width = pausebutton.width / 10
         val height = pausebutton.height / 10
@@ -326,8 +326,6 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         enemydestruction.clear()
 
 
-
-
         if (enemyFollower.x <= -250) {
             enemyFollower.spawn(screenY, player.y)
         }
@@ -351,8 +349,6 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
             collectable.coinmults.remove(objectToDelete)
         }
         collectabledesctruction.clear()
-
-
 
 
         for (speedcol in collectable.speedcols){
@@ -412,12 +408,7 @@ class SkyView(context: Context, screenXParam: Int, screenYParam: Int) : SurfaceV
         collectabledesctruction.clear()
 
 
-
-
-
-
     }
-
 
 
     override fun onTouchEvent(event: MotionEvent): Boolean {

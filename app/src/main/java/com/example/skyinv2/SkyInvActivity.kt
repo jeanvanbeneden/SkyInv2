@@ -68,9 +68,3 @@ class SkyInvActivity : AppCompatActivity() {
     }
 
 }
-
-
-
-
-
-
